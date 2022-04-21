@@ -1,5 +1,6 @@
 body {
-  background-color: #ede6db;
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
   height: 100%;
 }
 .App-logo {

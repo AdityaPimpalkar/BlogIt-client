@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { apiUrl } from "../../config.json";
+import config from "../config.json";
 
-const api = axios.create({ baseURL: apiUrl });
+const api = axios.create({ baseURL: config.apiUrl });
 
-axios.interceptors.response.use(
+api.interceptors.response.use(
   (response: AxiosResponse) => {
     return response;
   },

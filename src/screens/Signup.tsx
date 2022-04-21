@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Joi from "joi";
 import Spinner from "../icons/Spinner";
+import { signup } from "../services/auth.service";
+import { toast } from "react-toastify";
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -54,8 +56,8 @@ function Signup() {
     setState(element.target.value);
   };
 
-  const handleSave = () => {
-    const formData = {
+  const handleSave = async () => {
+    const formData: signUpForm = {
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -74,13 +76,21 @@ function Signup() {
       setErrors({ ...errors, ...errorDetails });
       return;
     }
-    setIsProcessing(true);
+    try {
+      setIsProcessing(true);
+      delete formData.confirmPassword;
+      await signup(formData);
+      toast.success("Signed up successfully!");
+      navigate("/posts", { replace: true });
+    } catch {
+      setIsProcessing(false);
+    }
   };
 
   return (
     <div className="flex items-center min-h-screen bg-gray-200 dark:bg-gray-900">
       <div className="container mx-auto">
-        <div className="max-w-md mx-auto my-10 py-5 bg-white rounded-md">
+        <div className="max-w-md mx-auto my-10 py-5 bg-white shadow-xl rounded-md">
           <div className="text-center">
             <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">
               Sign up
@@ -150,8 +160,11 @@ function Signup() {
               <div className="mb-6">
                 <button
                   type="button"
-                  className="w-full px-3 py-4 flex justify-center items-center text-white bg-tealsecondary rounded-md focus:outline-none"
+                  className={`w-full px-3 py-4 flex justify-center items-center text-white bg-tealsecondary rounded-md focus:outline-none ${
+                    isProcessing ?? "cursor-not-allowed"
+                  }`}
                   onClick={() => handleSave()}
+                  disabled={isProcessing}
                 >
                   {isProcessing ? (
                     <Spinner className="text-white h-5 w-5" />
@@ -219,7 +232,7 @@ type signUpForm = {
   lastName: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
 };
 
 type InputProps = {
