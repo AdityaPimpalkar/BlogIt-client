@@ -1,5 +1,5 @@
 import React from "react";
-import { BookmarkIcon, HeartIcon } from "@heroicons/react/outline";
+import { BookmarkIcon, HeartIcon, ChatIcon } from "@heroicons/react/outline";
 
 const Posts = () => {
   return (
@@ -77,8 +77,7 @@ const Posts = () => {
                     </h1>
                   </a>
                   <div className="flex items-center">
-                    <BookmarkIcon className="h-6 w-6" />
-                    <HeartIcon className="h-7 w-7" />
+                    <BookmarkIcon className="h-7 w-7 mx-1" />
                   </div>
                 </div>
                 <div className="mt-2">
@@ -97,13 +96,12 @@ const Posts = () => {
                   </p>
                 </div>
                 <div className="flex items-center justify-between mt-4">
-                  <a href="#" className="text-blue-500 hover:underline">
-                    Read more
-                  </a>
-                  <div>
-                    <span className="font-light text-gray-600">
-                      Jun 1, 2020
-                    </span>
+                  <span className="font-light text-gray-600">Jun 1, 2020</span>
+                  <div className="flex items-center">
+                    <HeartIcon className="h-7 w-7 mx-1" />
+                    123
+                    <ChatIcon className="h-7 w-7 mx-1" />
+                    50
                   </div>
                 </div>
               </div>
