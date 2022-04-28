@@ -62,7 +62,8 @@ function Login() {
     }
     try {
       setIsProcessing(true);
-      await login(formData);
+      const { userData, tokenData } = await login(formData);
+      sessionStorage.setItem("token", tokenData.token);
       navigate("/posts", { replace: true });
     } catch {
       setIsProcessing(false);

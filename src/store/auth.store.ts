@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Token, TokenData, UserData } from "../types/auth.types";
+import { Dispatch } from "redux";
 
 const user: UserData = {
   _id: "",
@@ -10,16 +11,18 @@ const user: UserData = {
   avatar: "",
 };
 
-const token: Token = {
-  token: "",
-  expiresIn: 0,
-};
-
-const initialState = { user, token };
-createSlice({
+const initialState = { user };
+const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<TokenData>) => {},
+    setTokenWithUser: (
+      state,
+      action: PayloadAction<{ userData: UserData }>
+    ) => {
+      state.user = { ...action.payload.userData };
+    },
   },
 });
+
+const { setTokenWithUser } = authSlice.actions;
