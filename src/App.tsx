@@ -14,6 +14,7 @@ function App() {
   const loggedInUser = () => {
     const token = localStorage.getItem("token");
     if (token) navigate("/posts", { replace: true });
+    else navigate("/login", { replace: true });
   };
 
   useEffect(() => {
