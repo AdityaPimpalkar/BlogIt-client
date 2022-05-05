@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { BookmarkIcon, HeartIcon, ChatIcon } from "@heroicons/react/outline";
 
 const Posts = () => {
+  const [posts, setPosts] = useState([]);
   return (
     <div className="overflow-x-hidden bg-gray-100">
       <nav className="px-6 py-4 bg-white shadow">
