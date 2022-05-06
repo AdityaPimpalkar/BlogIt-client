@@ -2,7 +2,19 @@ import React, { useState } from "react";
 import { BookmarkIcon, HeartIcon, ChatIcon } from "@heroicons/react/outline";
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([
+    {
+      title: "Build Your New Idea with Laravel Freamwork.",
+      description:
+        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in.",
+      publishedOn: new Date(),
+      createdBy: {
+        username: "Alex John",
+        avatar:
+          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80",
+      },
+    },
+  ]);
   return (
     <div className="overflow-x-hidden bg-gray-100">
       <nav className="px-6 py-4 bg-white shadow">
