@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PostsCard from "../components/PostsCard";
 import { BookmarkIcon, HeartIcon, ChatIcon } from "@heroicons/react/outline";
 
 const Posts = () => {
@@ -77,6 +78,15 @@ const Posts = () => {
               </div>
             </div>
           </div>
+          {posts.map((post, index) => (
+            <PostsCard
+              key={index}
+              title={post.title}
+              description={post.description}
+              publishedOn={post.publishedOn}
+              createdBy={post.createdBy}
+            />
+          ))}
           <div className="hidden w-4/12 -mx-8 lg:block">
             <div className="px-8">
               <h1 className="mb-4 text-xl font-bold text-gray-700">Authors</h1>

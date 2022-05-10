@@ -63,3 +63,5 @@ type Props = {
     avatar?: string;
   };
 };
+
+export default PostsCard;
