@@ -11,18 +11,18 @@ const user: UserData = {
   avatar: "",
 };
 
-const initialState = { user };
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: { user },
   reducers: {
-    setTokenWithUser: (
-      state,
-      action: PayloadAction<{ userData: UserData }>
-    ) => {
+    setUser: (state, action: PayloadAction<{ userData: UserData }>) => {
       state.user = { ...action.payload.userData };
     },
   },
 });
 
-const { setTokenWithUser } = authSlice.actions;
+const { setUser } = authSlice.actions;
+export default authSlice.reducer;
+
+export const setAuth = (userData: UserData) => (dispatch: Dispatch) =>
+  dispatch(setUser({ userData }));
