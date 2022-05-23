@@ -22,13 +22,11 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login />} />
-        <Route path="posts" element={<Posts />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="signup" element={<Signup />} />
+      <Route path="login" element={<Login />} />
+      <Route path="posts" element={<Posts />} />
+    </Routes>
   );
 }
 
