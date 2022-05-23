@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Joi from "joi";
 import Spinner from "../icons/Spinner";
 import { login } from "../services/auth.service";
+import { setAuth } from "../store/auth.store";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,7 +12,7 @@ function Login() {
   const [errors, setErrors] = useState<LoginForm>({} as LoginForm);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const form = {
     email: Joi.string()
       .email({ tlds: { allow: false } })
@@ -63,7 +65,8 @@ function Login() {
     try {
       setIsProcessing(true);
       const { userData, tokenData } = await login(formData);
-      sessionStorage.setItem("token", tokenData.token);
+      dispatch(setAuth(userData);
+      localStorage.setItem("token", tokenData.token);
       navigate("/posts", { replace: true });
     } catch {
       setIsProcessing(false);

@@ -1,13 +1,20 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../types/store.types";
 
 const Navbar = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <nav className="px-6 py-4 bg-white shadow">
       <div className="container flex flex-col mx-auto md:flex-row md:items-center md:justify-between">
         <div className="flex items-center justify-between">
           <div>
-            <a href="#" className="text-xl font-bold text-gray-800 md:text-2xl">
-              Brand
+            <a
+              href="/posts"
+              className="text-xl font-bold text-gray-800 md:text-2xl"
+            >
+              blogit
             </a>
           </div>
           <div>
@@ -22,24 +29,16 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex-col hidden md:flex md:flex-row md:-mx-4">
-          <a
-            href="#"
-            className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0"
-          >
-            Home
-          </a>
-          <a
-            href="#"
-            className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0"
-          >
-            Blog
-          </a>
-          <a
-            href="#"
-            className="my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0"
-          >
-            About us
-          </a>
+          <div className="flex items-center cursor-pointer">
+            <img
+              src={user?.avatar}
+              alt="avatar"
+              className="hidden object-cover w-10 h-10 mr-2 rounded-full sm:block"
+            />
+            <h1 className="font-bold text-gray-700 hover:underline">
+              {user.fullName}
+            </h1>
+          </div>
         </div>
       </div>
     </nav>
