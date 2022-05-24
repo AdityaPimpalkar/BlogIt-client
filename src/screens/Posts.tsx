@@ -18,7 +18,7 @@ const Posts = () => {
     },
   ]);
   return (
-    <div className="overflow-x-hidden bg-gray-100">
+    <div className="overflow-x-hidden">
       <Navbar />
 
       <div className="px-6 py-8">
@@ -35,16 +35,16 @@ const Posts = () => {
                 </select>
               </div>
             </div>
+            {posts.map((post, index) => (
+              <PostsCard
+                key={index}
+                title={post.title}
+                description={post.description}
+                publishedOn={post.publishedOn}
+                createdBy={post.createdBy}
+              />
+            ))}
           </div>
-          {posts.map((post, index) => (
-            <PostsCard
-              key={index}
-              title={post.title}
-              description={post.description}
-              publishedOn={post.publishedOn}
-              createdBy={post.createdBy}
-            />
-          ))}
           <div className="hidden w-4/12 -mx-8 lg:block">
             <div className="px-8">
               <h1 className="mb-4 text-xl font-bold text-gray-700">Authors</h1>
@@ -143,108 +143,11 @@ const Posts = () => {
                 </ul>
               </div>
             </div>
-            <div className="px-8 mt-10">
-              <h1 className="mb-4 text-xl font-bold text-gray-700">
-                Categories
-              </h1>
-              <div className="flex flex-col max-w-sm px-4 py-6 mx-auto bg-white rounded-lg shadow-md">
-                <ul>
-                  <li>
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:text-gray-600 hover:underline"
-                    >
-                      - AWS
-                    </a>
-                  </li>
-                  <li className="mt-2">
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:text-gray-600 hover:underline"
-                    >
-                      - Laravel
-                    </a>
-                  </li>
-                  <li className="mt-2">
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:text-gray-600 hover:underline"
-                    >
-                      - Vue
-                    </a>
-                  </li>
-                  <li className="mt-2">
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:text-gray-600 hover:underline"
-                    >
-                      - Design
-                    </a>
-                  </li>
-                  <li className="flex items-center mt-2">
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:text-gray-600 hover:underline"
-                    >
-                      - Django
-                    </a>
-                  </li>
-                  <li className="flex items-center mt-2">
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:text-gray-600 hover:underline"
-                    >
-                      - PHP
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="px-8 mt-10">
-              <h1 className="mb-4 text-xl font-bold text-gray-700">
-                Recent Post
-              </h1>
-              <div className="flex flex-col max-w-sm px-8 py-6 mx-auto bg-white rounded-lg shadow-md">
-                <div className="flex items-center justify-center">
-                  <a
-                    href="#"
-                    className="px-2 py-1 text-sm text-green-100 bg-gray-600 rounded hover:bg-gray-500"
-                  >
-                    Laravel
-                  </a>
-                </div>
-                <div className="mt-4">
-                  <a
-                    href="#"
-                    className="text-lg font-medium text-gray-700 hover:underline"
-                  >
-                    Build Your New Idea with Laravel Freamwork.
-                  </a>
-                </div>
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center">
-                    <img
-                      src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
-                      alt="avatar"
-                      className="object-cover w-8 h-8 rounded-full"
-                    />
-                    <a
-                      href="#"
-                      className="mx-3 text-sm text-gray-700 hover:underline"
-                    >
-                      Alex John
-                    </a>
-                  </div>
-                  <span className="text-sm font-light text-gray-600">
-                    Jun 1, 2020
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-      <footer className="px-6 py-2 text-gray-100 bg-gray-800">
+
+      <footer className="px-6 py-2 text-gray-100 bg-gray-800 absolute bottom-0 w-full">
         <div className="container flex flex-col items-center justify-between mx-auto md:flex-row">
           <a href="#" className="text-2xl font-bold">
             Brand
