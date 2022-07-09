@@ -1,15 +1,9 @@
 import { HeartIcon, ChatIcon, BookmarkIcon } from "@heroicons/react/outline";
 import React from "react";
 
-const PostsCard = ({
-  key,
-  title,
-  description,
-  publishedOn,
-  createdBy,
-}: Props) => {
+const PostsCard = ({ title, description, publishedOn, createdBy }: Props) => {
   return (
-    <div className="mt-6" key={key}>
+    <div className="mt-6">
       <div className=" max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between mt-4">
           <a href="#" className="flex items-center">
@@ -54,7 +48,6 @@ const PostsCard = ({
 };
 
 type Props = {
-  key: number;
   title: string;
   description: string;
   publishedOn: Date;

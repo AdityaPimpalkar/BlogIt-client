@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { PlusCircleIcon } from "@heroicons/react/solid";
 import { RootState } from "../types/store.types";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -30,6 +32,9 @@ const Navbar = () => {
         </div>
         <div className="flex-col hidden md:flex md:flex-row md:-mx-4">
           <div className="flex items-center cursor-pointer">
+            <Link to="/posts/new">
+              <PlusCircleIcon className="h-5 w-5" />
+            </Link>
             <img
               src={user?.avatar}
               alt="avatar"
