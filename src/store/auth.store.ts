@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Token, TokenData, UserData } from "../types/auth.types";
 import { Dispatch } from "redux";
 
-let dispatch: Dispatch;
-
 const user: UserData = {
   _id: "",
   firstName: "",
@@ -23,9 +21,5 @@ const authSlice = createSlice({
   },
 });
 
-const { setUser } = authSlice.actions;
+export const { setUser } = authSlice.actions;
 export default authSlice.reducer;
-
-export const setAuth = (userData: UserData) => {
-  dispatch(setUser({ userData }));
-};

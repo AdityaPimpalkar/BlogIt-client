@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import Joi from "joi";
 import Spinner from "../icons/Spinner";
 import { login } from "../services/auth.service";
-import { setAuth } from "../store/auth.store";
+import { setUser } from "../store/auth.store";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -53,9 +53,7 @@ function Login() {
     const schema = Joi.object({ ...form });
     const { error } = schema.validate(formData);
     if (error) {
-      const errorDetails = {} as {
-        [x: string]: string;
-      };
+      const errorDetails = {} as errorDetails;
       for (let item of error.details) {
         if (item.context?.key) errorDetails[item.context?.key] = item.message;
       }
@@ -65,7 +63,7 @@ function Login() {
     try {
       setIsProcessing(true);
       const { userData, tokenData } = await login(formData);
-      dispatch(setAuth(userData);
+      dispatch(setUser({ userData }));
       localStorage.setItem("token", tokenData.token);
       navigate("/posts", { replace: true });
     } catch {
@@ -177,6 +175,10 @@ const Input = ({
       <div className="text-sm text-red-500 mt-1">{error ?? error}</div>
     </div>
   );
+};
+
+type errorDetails = {
+  [x: string]: string;
 };
 
 type LoginForm = {
