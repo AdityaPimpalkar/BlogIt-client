@@ -13,3 +13,15 @@ export const parseJwt = (token: string) => {
 
   return JSON.parse(jsonPayload);
 };
+
+export const setJwt = (token: string) => {
+  localStorage.setItem("token", token);
+};
+
+export const removeJwt = () => {
+  localStorage.removeItem("token");
+};
+
+export const getJwt = () => {
+  return localStorage.getItem("token") as string;
+};

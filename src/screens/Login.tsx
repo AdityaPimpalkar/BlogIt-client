@@ -5,6 +5,7 @@ import Joi from "joi";
 import Spinner from "../icons/Spinner";
 import { login } from "../services/auth.service";
 import { setUser } from "../store/auth.store";
+import { setJwt } from "../utilities";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -64,7 +65,7 @@ function Login() {
       setIsProcessing(true);
       const { userData, tokenData } = await login(formData);
       dispatch(setUser({ userData }));
-      localStorage.setItem("token", tokenData.token);
+      setJwt(tokenData.token);
       navigate("/posts", { replace: true });
     } catch {
       setIsProcessing(false);
