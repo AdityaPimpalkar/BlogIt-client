@@ -1,11 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PlusCircleIcon } from "@heroicons/react/solid";
+import { LogoutIcon } from "@heroicons/react/outline";
 import { RootState } from "../types/store.types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../store/auth.store";
+import { removeJwt } from "../utilities";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const logout = () => {
+    dispatch(logoutUser());
+    removeJwt();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <nav className="px-6 py-4 bg-white shadow">
@@ -33,7 +44,7 @@ const Navbar = () => {
         <div className="flex-col hidden md:flex md:flex-row md:-mx-4">
           <div className="flex items-center cursor-pointer">
             <Link to="/posts/new">
-              <PlusCircleIcon className="h-5 w-5" />
+              <PlusCircleIcon className="h-10 w-10 mx-4 text-tealsecondary" />
             </Link>
             <img
               src={user?.avatar}
@@ -43,6 +54,7 @@ const Navbar = () => {
             <h1 className="font-bold text-gray-700 hover:underline">
               {user.fullName}
             </h1>
+            <LogoutIcon className="h-8 w-8 mx-4" onClick={logout} />
           </div>
         </div>
       </div>

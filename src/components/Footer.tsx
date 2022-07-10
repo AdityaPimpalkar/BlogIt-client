@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 const Footer = () => {
   return (
-    <footer className="px-6 py-2 text-gray-100 bg-gray-800 absolute bottom-0 w-full">
+    <footer className="px-6 py-2 text-gray-100 bg-gray-800 fixed bottom-0 w-full">
       <div className="container flex flex-col items-center justify-between mx-auto md:flex-row">
         <a href="#" className="text-2xl font-bold">
           Brand
