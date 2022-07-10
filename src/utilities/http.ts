@@ -1,5 +1,6 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { getJwt } from ".";
 import config from "../config.json";
 
 const api = axios.create({ baseURL: config.apiUrl });
@@ -24,14 +25,22 @@ api.interceptors.response.use(
   }
 );
 
-function setJwtHeader(jwt: string) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
-}
+api.interceptors.request.use(
+  (request: AxiosRequestConfig) => {
+    const token = getJwt();
+    request.headers = { Authorization: `Bearer ${token}` };
+    return request;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  }
+);
 
-export default {
+const endpoints = {
   get: api.get,
   post: api.post,
   put: api.put,
   delete: api.delete,
-  setJwtHeader,
 };
+
+export default endpoints;
