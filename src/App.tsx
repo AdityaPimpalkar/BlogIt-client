@@ -11,8 +11,10 @@ import Footer from "./components/Footer";
 import { setUser } from "./store/auth.store";
 import { UserData } from "./types/auth.types";
 import { getJwt, parseJwt } from "./utilities";
-import Main from "./components/Layout";
+import Layout from "./components/Layout";
 import NewPost from "./screens/NewPost";
+import Post from "./screens/Post";
+import EditPost from "./screens/EditPost";
 
 toast.configure({ position: "top-right" });
 
@@ -26,8 +28,7 @@ function App() {
     if (token) {
       const userData = parseJwt(token) as UserData;
       dispatch(setUser({ userData }));
-      navigate("/posts", { replace: true });
-    } else navigate("/login", { replace: true });
+    } //else navigate("/login", { replace: true });
   }, [dispatch, navigate]);
 
   useEffect(() => {
@@ -35,14 +36,18 @@ function App() {
   }, [user, loggedInUser]);
 
   return (
-    <Routes>
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Main />}>
-        <Route path="/posts" element={<Posts />} />
-        <Route path="/posts/new" element={<NewPost />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Posts />} />
+          <Route path="/posts/new" element={<NewPost />} />
+          <Route path="/posts/edit/:id" element={<EditPost />} />
+          <Route path="/posts/:id" element={<Post />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
