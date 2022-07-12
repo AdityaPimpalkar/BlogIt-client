@@ -22,7 +22,7 @@ const PostsCard = ({ title, description, publishedOn, createdBy }: Props) => {
         </div>
         <div className="mt-2">
           <a
-            href="#"
+            href="http://localhost:3000/posts/62cb030f53326a13f6a759c7"
             className="text-2xl font-bold text-gray-700 hover:underline"
           >
             {title}

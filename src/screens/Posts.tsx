@@ -14,11 +14,33 @@ const Posts = () => {
           "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80",
       },
     },
+    {
+      title: "Build Your New Idea with Laravel Freamwork.",
+      description:
+        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in.",
+      publishedOn: new Date(),
+      createdBy: {
+        username: "Alex John",
+        avatar:
+          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80",
+      },
+    },
+    {
+      title: "Build Your New Idea with Laravel Freamwork.",
+      description:
+        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in.",
+      publishedOn: new Date(),
+      createdBy: {
+        username: "Alex John",
+        avatar:
+          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80",
+      },
+    },
   ]);
   return (
-    <div className="px-6 py-8">
-      <div className="container flex justify-between mx-auto">
-        <div className="w-full lg:w-8/12">
+    <div className="px-7 py-4 w-full">
+      <div className="container  ">
+        <div className="w-full lg:w-3/4">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-gray-700 md:text-2xl">
               Post
@@ -40,7 +62,7 @@ const Posts = () => {
             />
           ))}
         </div>
-        <div className="hidden w-4/12 -mx-8 lg:block">
+        {/* <div className="hidden w-4/12 -mx-8 lg:block">
           <div className="px-8">
             <h1 className="mb-4 text-xl font-bold text-gray-700">Authors</h1>
             <div className="flex flex-col max-w-sm px-6 py-4 mx-auto bg-white rounded-lg shadow-md">
@@ -138,7 +160,7 @@ const Posts = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

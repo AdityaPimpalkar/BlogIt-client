@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Joi from "joi";
 import Spinner from "../icons/Spinner";
 import { login } from "../services/auth.service";
-import { setUser } from "../store/auth.store";
+import { logoutUser, setUser } from "../store/auth.store";
 import { setJwt } from "../utilities";
 
 function Login() {
@@ -14,6 +14,11 @@ function Login() {
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(logoutUser());
+  }, [dispatch]);
+
   const form = {
     email: Joi.string()
       .email({ tlds: { allow: false } })
@@ -66,14 +71,14 @@ function Login() {
       const { userData, tokenData } = await login(formData);
       dispatch(setUser({ userData }));
       setJwt(tokenData.token);
-      navigate("/posts", { replace: true });
+      navigate("/", { replace: true });
     } catch {
       setIsProcessing(false);
     }
   };
 
   return (
-    <div className="flex items-center min-h-screen bg-gray-200 dark:bg-gray-900">
+    <div className="flex items-center bg-gray-200 dark:bg-gray-900">
       <div className="container mx-auto">
         <div className="max-w-md mx-auto my-10 py-5 bg-white shadow-xl rounded-md">
           <div className="text-center">
