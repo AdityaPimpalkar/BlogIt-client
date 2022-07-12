@@ -16,8 +16,8 @@ const NewPost = () => {
 
   const form = {
     title: Joi.string().required().min(3).max(100).label("Title"),
-    subTitle: Joi.string().required().min(3).max(100).label("Subtitle"),
-    description: Joi.string().required().min(3).max(500).label("Description"),
+    subTitle: Joi.string().required().min(3).max(300).label("Subtitle"),
+    description: Joi.string().required().min(3).max(1000).label("Description"),
     isPublished: Joi.allow(),
   };
 
@@ -59,14 +59,14 @@ const NewPost = () => {
     return true;
   };
 
-  const handleSaveDraft = async () => {
+  const handleSave = async (isPublish: boolean) => {
     try {
       setIsProcessing(true);
       const formData: CreatePost = {
         title,
         subTitle,
         description,
-        isPublished: false,
+        isPublished: isPublish,
       };
       const isValid = validate(formData);
 
@@ -82,9 +82,9 @@ const NewPost = () => {
     }
   };
   return (
-    <div className="px-6 py-8">
+    <div className="px-7 py-4 w-full">
       <div className="container flex justify-between mx-auto">
-        <div className="w-full lg:w-8/12">
+        <div className="w-full lg:w-3/4">
           <h1 className="text-xl font-bold text-gray-700 md:text-2xl">
             New Post
           </h1>
@@ -139,7 +139,7 @@ const NewPost = () => {
                   minLength={3}
                   value={description}
                   onChange={(e) => handleChange(e, setDescription)}
-                  maxLength={500}
+                  maxLength={1000}
                   rows={10}
                 />
                 <div className="text-sm text-red-500 mt-1">
@@ -152,7 +152,7 @@ const NewPost = () => {
                   className={`px-6 py-4 mx-2 flex justify-center items-center text-white bg-gray-500 rounded-md focus:outline-none ${
                     isProcessing ?? "cursor-not-allowed"
                   }`}
-                  onClick={handleSaveDraft}
+                  onClick={() => handleSave(false)}
                   disabled={isProcessing}
                 >
                   {isProcessing ? (
@@ -165,7 +165,7 @@ const NewPost = () => {
                   className={`px-6 py-4 flex justify-center items-center text-white bg-tealsecondary rounded-md focus:outline-none ${
                     isProcessing ?? "cursor-not-allowed"
                   }`}
-                  onClick={handleSaveDraft}
+                  onClick={() => handleSave(true)}
                   disabled={isProcessing}
                 >
                   {isProcessing ? (
