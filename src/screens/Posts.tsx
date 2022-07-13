@@ -1,42 +1,21 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PostsCard from "../components/PostsCard";
+import { explorePosts } from "../services/posts.service";
+import { Post } from "../types/posts.types";
 
 const Posts = () => {
-  const [posts, setPosts] = useState([
-    {
-      title: "Build Your New Idea with Laravel Freamwork.",
-      description:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in.",
-      publishedOn: new Date(),
-      createdBy: {
-        username: "Alex John",
-        avatar:
-          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80",
-      },
-    },
-    {
-      title: "Build Your New Idea with Laravel Freamwork.",
-      description:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in.",
-      publishedOn: new Date(),
-      createdBy: {
-        username: "Alex John",
-        avatar:
-          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80",
-      },
-    },
-    {
-      title: "Build Your New Idea with Laravel Freamwork.",
-      description:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora expedita dicta totam aspernatur doloremque. Excepturi iste iusto eos enim reprehenderit nisi, accusamus delectus nihil quis facere in.",
-      publishedOn: new Date(),
-      createdBy: {
-        username: "Alex John",
-        avatar:
-          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80",
-      },
-    },
-  ]);
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const loadPosts = useCallback(async () => {
+    try {
+      const loadedPosts = await explorePosts();
+      setPosts([...loadedPosts]);
+    } catch (error) {}
+  }, []);
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
   return (
     <div className="px-7 py-4 w-full">
       <div className="container  ">
@@ -56,7 +35,7 @@ const Posts = () => {
             <PostsCard
               key={index}
               title={post.title}
-              description={post.description}
+              subTitle={post.subTitle}
               publishedOn={post.publishedOn}
               createdBy={post.createdBy}
             />

@@ -18,6 +18,7 @@ export type Post = {
   isPublished: boolean;
   publishedOn?: number;
   createdBy: {
+    _id: string;
     fullName: string;
     avatar?: string;
   };

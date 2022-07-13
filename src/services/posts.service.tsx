@@ -44,3 +44,16 @@ export const getPostById = async (id: string): Promise<Post> => {
     return Promise.reject();
   }
 };
+
+export const explorePosts = async (): Promise<Post[]> => {
+  try {
+    const res = await http.get(`${postsApiEndpoint}/explore`);
+    const post = res.data;
+    return post;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    const message: string = axiosError.response?.data.message;
+    toast.error(message);
+    return Promise.reject();
+  }
+};
