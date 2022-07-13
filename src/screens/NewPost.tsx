@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../icons/Spinner";
 import { CreatePost } from "../types/posts.types";
 import { createPost } from "../services/posts.service";
+import { Editor } from "@tinymce/tinymce-react";
 
 const NewPost = () => {
   const [title, setTitle] = useState("");
@@ -17,7 +18,7 @@ const NewPost = () => {
   const form = {
     title: Joi.string().required().min(3).max(100).label("Title"),
     subTitle: Joi.string().required().min(3).max(300).label("Subtitle"),
-    description: Joi.string().required().min(3).max(1000).label("Description"),
+    description: Joi.string().required().label("Description"),
     isPublished: Joi.allow(),
   };
 
@@ -131,7 +132,11 @@ const NewPost = () => {
                 <h5 className="text-lg font-bold text-gray-700 md:text-xl">
                   Description
                 </h5>
-                <textarea
+                <Editor
+                  apiKey="inpiizzpndcy769d1ip67c2y422x52wicn1imcw5dtj8p4ds"
+                  onEditorChange={(val) => setDescription(val)}
+                />
+                {/* <textarea
                   className="w-full h-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:border-tealprimary-400 focus:ring focus:ring-tealprimary focus:border-tealprimary-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                   placeholder="Enter a description here..."
                   name="description"
@@ -141,7 +146,7 @@ const NewPost = () => {
                   onChange={(e) => handleChange(e, setDescription)}
                   maxLength={1000}
                   rows={10}
-                />
+                /> */}
                 <div className="text-sm text-red-500 mt-1">
                   {errors.description ?? errors.description}
                 </div>
