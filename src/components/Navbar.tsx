@@ -14,9 +14,9 @@ import { logoutUser } from "../store/auth.store";
 import { removeJwt } from "../utilities";
 
 const Navbar = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.auth.user);
 
   const logout = () => {
     dispatch(logoutUser());
@@ -61,7 +61,9 @@ const Navbar = () => {
           ) : (
             <UserCircleIcon className="w-7 h-7" />
           )}
-          <LogoutIcon className="h-7 w-7 cursor-pointer" onClick={logout} />
+          {user.fullName && (
+            <LogoutIcon className="h-7 w-7 cursor-pointer" onClick={logout} />
+          )}
 
           {/* {user.fullName && (
           <div className="flex-row hidden md:flex md:flex-row md:-mx-4">
