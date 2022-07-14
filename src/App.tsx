@@ -3,18 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { RootState } from "../src/types/store.types";
-import Signup from "./screens/Signup";
-import Posts from "./screens/Posts";
-import Login from "./screens/Login";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import { setUser } from "./store/auth.store";
 import { UserData } from "./types/auth.types";
 import { getJwt, parseJwt } from "./utilities";
 import Layout from "./components/Layout";
+import Signup from "./screens/Signup";
+import Explore from "./screens/Explore";
+import Login from "./screens/Login";
 import NewPost from "./screens/NewPost";
 import Post from "./screens/Post";
 import EditPost from "./screens/EditPost";
+import Home from "./screens/Home";
 
 toast.configure({ position: "top-right" });
 
@@ -28,7 +27,7 @@ function App() {
     if (token) {
       const userData = parseJwt(token) as UserData;
       dispatch(setUser({ userData }));
-    } //else navigate("/login", { replace: true });
+    }
   }, [dispatch, navigate]);
 
   useEffect(() => {
@@ -41,7 +40,10 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route element={<Layout />}>
-          <Route path="/" element={<Posts />} />
+          <Route path="/explore" element={<Explore />} />
+        </Route>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
           <Route path="/posts/new" element={<NewPost />} />
           <Route path="/posts/edit/:id" element={<EditPost />} />
           <Route path="/posts/:id" element={<Post />} />

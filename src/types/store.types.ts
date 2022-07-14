@@ -9,4 +9,11 @@ export interface RootState {
       avatar: string;
     };
   };
+  navigation: {
+    home: boolean;
+    explore: boolean;
+    bookmarks: boolean;
+    newPost: boolean;
+    profile: boolean;
+  };
 }
