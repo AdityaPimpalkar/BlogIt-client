@@ -3,7 +3,7 @@ import PostsCard from "../components/PostsCard";
 import { explorePosts } from "../services/posts.service";
 import { Post } from "../types/posts.types";
 
-const Posts = () => {
+const Explore = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const loadPosts = useCallback(async () => {
@@ -34,8 +34,9 @@ const Posts = () => {
           {posts.map((post, index) => (
             <PostsCard
               key={index}
+              id={post._id}
               title={post.title}
-              subTitle={post.subTitle}
+              description={post.description}
               publishedOn={post.publishedOn}
               createdBy={post.createdBy}
             />
@@ -145,4 +146,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default Explore;

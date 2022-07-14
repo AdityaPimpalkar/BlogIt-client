@@ -1,12 +1,17 @@
-import { BookmarkIcon, ChatIcon, HeartIcon } from "@heroicons/react/outline";
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import htmlParser from "html-react-parser";
+import { BookmarkIcon, ChatIcon, HeartIcon } from "@heroicons/react/outline";
+import { RiEditCircleFill } from "react-icons/ri";
+import { Post as PostProps, UpdatePost } from "../types/posts.types";
+import { RootState } from "../types/store.types";
 import Spinner from "../icons/Spinner";
 import { getPostById, updatePost } from "../services/posts.service";
-import { Post as PostProps, UpdatePost } from "../types/posts.types";
 
 const Post = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const params = useParams();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -18,6 +23,7 @@ const Post = () => {
     isPublished: false,
     publishedOn: 0,
     createdBy: {
+      _id: "",
       fullName: "",
       avatar: "",
     },
@@ -81,21 +87,19 @@ const Post = () => {
             </div>
           </a>
           <div className="flex items-center">
+            {user._id === post.createdBy._id && (
+              <Link to={`/posts/edit/${post._id}`}>
+                <RiEditCircleFill className="h-7 w-7 text-tealsecondary mx-1" />
+              </Link>
+            )}
             <BookmarkIcon className="h-7 w-7 mx-1" />
           </div>
         </div>
         <div className="mt-4">
           <div className="text-3xl font-bold text-gray-700">{post.title}</div>
-          <p className="mt-4 text-gray-600 italic">{post.subTitle}</p>
+          <p className="mt-4 text-gray-600 text-xl italic">{post.subTitle}</p>
         </div>
-        <div className="mt-4">
-          <textarea
-            className="w-full h-full placeholder-gray-300 cursor-disabled resize-none"
-            autoCorrect="off"
-            spellCheck={false}
-            value={post.description}
-          />
-        </div>
+        <div className="mt-4">{htmlParser(post.description)}</div>
         {post.isPublished ? (
           <div className="flex items-center justify-between mt-4">
             <span className="font-light text-gray-600"></span>
@@ -121,8 +125,6 @@ const Post = () => {
             </button>
           </div>
         )}
-
-        {/*  */}
       </div>
     </div>
   );
