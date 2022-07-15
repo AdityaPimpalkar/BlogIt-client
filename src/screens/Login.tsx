@@ -6,6 +6,7 @@ import Spinner from "../icons/Spinner";
 import { login } from "../services/auth.service";
 import { logoutUser, setUser } from "../store/auth.store";
 import { setJwt } from "../utilities";
+import { setNavigation } from "../store/navigation.store";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -70,6 +71,7 @@ function Login() {
       setIsProcessing(true);
       const { userData, tokenData } = await login(formData);
       dispatch(setUser({ userData }));
+      dispatch(setNavigation({ nav: "home" }));
       setJwt(tokenData.token);
       navigate("/", { replace: true });
     } catch {

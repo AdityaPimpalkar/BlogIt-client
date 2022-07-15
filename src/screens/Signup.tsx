@@ -4,6 +4,10 @@ import Joi from "joi";
 import Spinner from "../icons/Spinner";
 import { signup } from "../services/auth.service";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/auth.store";
+import { setNavigation } from "../store/navigation.store";
+import { setJwt } from "../utilities";
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -13,6 +17,7 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<signUpForm>({} as signUpForm);
   const [isProcessing, setIsProcessing] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const form = {
@@ -79,9 +84,12 @@ function Signup() {
     try {
       setIsProcessing(true);
       delete formData.confirmPassword;
-      await signup(formData);
+      const { userData, tokenData } = await signup(formData);
+      dispatch(setUser({ userData }));
+      dispatch(setNavigation({ nav: "home" }));
+      setJwt(tokenData.token);
       toast.success("Signed up successfully!");
-      navigate("/posts", { replace: true });
+      navigate("/explore", { replace: true });
     } catch {
       setIsProcessing(false);
     }
