@@ -7,11 +7,11 @@ const authApiEndpoint = "/auth";
 
 export const signup = async (
   signup: SignUp
-): Promise<{ tokenData: Token; userData: TokenData }> => {
+): Promise<{ tokenData: Token; userData: UserData }> => {
   try {
     const res = await http.post(`${authApiEndpoint}/signup`, signup);
     const tokenData: Token = res.data.tokenData;
-    const userData: TokenData = res.data.userData;
+    const userData: UserData = res.data.userData;
     return { tokenData, userData };
   } catch (error) {
     const axiosError = error as AxiosError;

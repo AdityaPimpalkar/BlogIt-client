@@ -9,6 +9,7 @@ import { Post as PostProps, UpdatePost } from "../types/posts.types";
 import { RootState } from "../types/store.types";
 import Spinner from "../icons/Spinner";
 import { getPostById, updatePost } from "../services/posts.service";
+import { UserCircleIcon } from "@heroicons/react/solid";
 
 const Post = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -70,11 +71,15 @@ const Post = () => {
       <div className=" max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between mt-4">
           <a href="#" className="flex items-center">
-            <img
-              src={post.createdBy.avatar}
-              alt="avatar"
-              className="hidden object-cover w-12 h-12 mr-4 rounded-full sm:block"
-            />
+            {post.createdBy?.avatar ? (
+              <img
+                src={post.createdBy.avatar}
+                alt="avatar"
+                className="hidden object-cover w-12 h-12 mr-4 rounded-full sm:block"
+              />
+            ) : (
+              <UserCircleIcon className="hidden object-cover w-12 h-12 mr-4 rounded-full sm:block" />
+            )}
             <div>
               <h1 className="font-bold text-gray-700 hover:underline">
                 {post.createdBy.fullName}
