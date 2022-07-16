@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import Spinner from "../icons/Spinner";
 import { Post, UpdatePost } from "../types/posts.types";
-import { getPostById, updatePost } from "../services/posts.service";
+import { getPost, updatePost } from "../services/posts.service";
 
 const EditPost = () => {
   const [postForm, setPostForm] = useState<Post>({} as Post);
@@ -26,7 +26,7 @@ const EditPost = () => {
   const loadPost = useCallback(async () => {
     try {
       if (params?.id) {
-        const post = await getPostById(params.id);
+        const post = await getPost(params.id);
         setPostForm({ ...post });
       }
     } catch (error) {

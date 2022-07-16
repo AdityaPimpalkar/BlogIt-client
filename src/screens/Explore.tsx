@@ -38,6 +38,7 @@ const Explore = () => {
               title={post.title}
               description={post.description}
               publishedOn={post.publishedOn}
+              bookmarked={false}
               createdBy={post.createdBy}
             />
           ))}
