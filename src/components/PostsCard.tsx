@@ -1,7 +1,10 @@
 import { HeartIcon, ChatIcon, BookmarkIcon } from "@heroicons/react/outline";
+import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/solid";
 import { UserCircleIcon } from "@heroicons/react/solid";
 import htmlParser from "html-react-parser";
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { createBookmark, removeBookmark } from "../services/bookmarks.service";
 
 const PostsCard = ({
   id,
@@ -9,7 +12,31 @@ const PostsCard = ({
   description,
   publishedOn,
   createdBy,
-}: Props) => {
+  bookmarkId,
+  bookmarked,
+  bookmarkRemoved,
+}: PostsCardProps) => {
+  const [isBookmarked, setIsBookmarked] = useState(bookmarked);
+  const bookmarkPost = async (id: string) => {
+    try {
+      setIsBookmarked(true);
+      await createBookmark(id);
+      toast.success("Added to bookmarks!");
+    } catch (error) {
+      setIsBookmarked(false);
+    }
+  };
+
+  const deleteBookmark = async (id: string) => {
+    try {
+      setIsBookmarked(false);
+      await removeBookmark(id);
+      if (bookmarkRemoved) bookmarkRemoved(id);
+    } catch (error) {
+      setIsBookmarked(true);
+    }
+  };
+
   return (
     <div className="mt-6">
       <div className=" max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
@@ -29,7 +56,17 @@ const PostsCard = ({
             </h1>
           </a>
           <div className="flex items-center">
-            <BookmarkIcon className="h-7 w-7 mx-1" />
+            {isBookmarked ? (
+              <BookmarkSolidIcon
+                className="h-7 w-7 mx-1 cursor-pointer"
+                onClick={() => (bookmarkId ? deleteBookmark(bookmarkId) : null)}
+              />
+            ) : (
+              <BookmarkIcon
+                className="h-7 w-7 mx-1 cursor-pointer"
+                onClick={() => bookmarkPost(id)}
+              />
+            )}
           </div>
         </div>
         <div className="mt-2">
@@ -59,11 +96,14 @@ const PostsCard = ({
   );
 };
 
-type Props = {
+type PostsCardProps = {
   id: string;
   title: string;
   description: string;
   publishedOn?: number;
+  bookmarkId?: string;
+  bookmarked: boolean;
+  bookmarkRemoved?: (id: string) => void;
   createdBy: {
     _id: string;
     fullName: string;

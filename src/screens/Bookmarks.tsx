@@ -16,6 +16,14 @@ const Bookmarks = () => {
   useEffect(() => {
     loadBookmarks();
   }, []);
+
+  const bookmarkRemoved = (id: string) => {
+    const udpatedBookmarks = bookmarks.filter(
+      ({ _id: bookmarkId }) => bookmarkId !== id
+    );
+    setBookmarks([...udpatedBookmarks]);
+  };
+
   return (
     <div className="px-7 py-4 w-full">
       <div className="container  ">
@@ -25,13 +33,16 @@ const Bookmarks = () => {
               Bookmarks
             </h1>
           </div>
-          {bookmarks.map(({ post }, index) => (
+          {bookmarks.map(({ post, _id }, index) => (
             <PostsCard
               key={index}
               id={post._id}
               title={post.title}
               description={post.description}
               publishedOn={post.publishedOn}
+              bookmarkId={_id}
+              bookmarked={true}
+              bookmarkRemoved={bookmarkRemoved}
               createdBy={post.createdBy}
             />
           ))}
