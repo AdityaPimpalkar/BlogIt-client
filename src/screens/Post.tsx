@@ -23,12 +23,15 @@ const Post = () => {
     image: "",
     isPublished: false,
     publishedOn: 0,
-    createdBy: {
-      _id: "",
-      fullName: "",
-      avatar: "",
-    },
+    createdBy: [
+      {
+        _id: "",
+        fullName: "",
+        avatar: "",
+      },
+    ],
   } as PostProps);
+  const [createdBy] = post.createdBy;
 
   const loadPost = useCallback(async () => {
     try {
@@ -71,9 +74,9 @@ const Post = () => {
       <div className=" max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between mt-4">
           <a href="#" className="flex items-center">
-            {post.createdBy?.avatar ? (
+            {createdBy?.avatar ? (
               <img
-                src={post.createdBy.avatar}
+                src={createdBy.avatar}
                 alt="avatar"
                 className="hidden object-cover w-12 h-12 mr-4 rounded-full sm:block"
               />
@@ -82,7 +85,7 @@ const Post = () => {
             )}
             <div>
               <h1 className="font-bold text-gray-700 hover:underline">
-                {post.createdBy.fullName}
+                {createdBy.fullName}
               </h1>
               <div className="text-sm">
                 {post.publishedOn
@@ -92,7 +95,7 @@ const Post = () => {
             </div>
           </a>
           <div className="flex items-center">
-            {user._id === post.createdBy._id && (
+            {user._id === createdBy._id && (
               <Link to={`/posts/edit/${post._id}`}>
                 <RiEditCircleFill className="h-7 w-7 text-tealsecondary mx-1" />
               </Link>

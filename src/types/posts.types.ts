@@ -17,11 +17,12 @@ export type Post = {
   description: string;
   isPublished: boolean;
   publishedOn?: number;
-  createdBy: {
+  bookmarked?: Array<[]>;
+  createdBy: Array<{
     _id: string;
     fullName: string;
     avatar?: string;
-  };
+  }>;
 };
 
 export type CreatePost = {

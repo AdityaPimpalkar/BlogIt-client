@@ -1,21 +1,31 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import PostsCard from "../components/PostsCard";
-import { explorePosts } from "../services/posts.service";
+import { explorePosts, getPosts } from "../services/posts.service";
 import { Post } from "../types/posts.types";
+import { RootState } from "../types/store.types";
+import { isEmpty } from "../utilities";
 
 const Explore = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [posts, setPosts] = useState<Post[]>([]);
 
   const loadPosts = useCallback(async () => {
     try {
-      const loadedPosts = await explorePosts();
-      setPosts([...loadedPosts]);
+      if (user._id) {
+        const myPosts = await getPosts();
+        setPosts([...myPosts]);
+      } else {
+        const loadedPosts = await explorePosts();
+        setPosts([...loadedPosts]);
+      }
     } catch (error) {}
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    loadPosts();
-  }, []);
+    if (user._id) loadPosts();
+  }, [user]);
+
   return (
     <div className="px-7 py-4 w-full">
       <div className="container  ">
@@ -31,17 +41,23 @@ const Explore = () => {
               </select>
             </div>
           </div>
-          {posts.map((post, index) => (
-            <PostsCard
-              key={index}
-              id={post._id}
-              title={post.title}
-              description={post.description}
-              publishedOn={post.publishedOn}
-              bookmarked={false}
-              createdBy={post.createdBy}
-            />
-          ))}
+          {posts.map((post, index) => {
+            const [createdBy] = post.createdBy;
+            const bookmarked = post.bookmarked
+              ? post.bookmarked.length > 0
+              : false;
+            return (
+              <PostsCard
+                key={index}
+                id={post._id}
+                title={post.title}
+                description={post.description}
+                publishedOn={post.publishedOn}
+                bookmarked={bookmarked}
+                createdBy={createdBy}
+              />
+            );
+          })}
         </div>
         {/* <div className="hidden w-4/12 -mx-8 lg:block">
           <div className="px-8">

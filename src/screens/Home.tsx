@@ -36,17 +36,23 @@ const Home = () => {
               </select>
             </div>
           </div>
-          {posts.map((post, index) => (
-            <PostsCard
-              key={index}
-              id={post._id}
-              title={post.title}
-              description={post.description}
-              publishedOn={post.publishedOn}
-              bookmarked={false}
-              createdBy={post.createdBy}
-            />
-          ))}
+          {posts.map((post, index) => {
+            const [createdBy] = post.createdBy;
+            const bookmarked = post.bookmarked
+              ? post.bookmarked.length > 0
+              : false;
+            return (
+              <PostsCard
+                key={index}
+                id={post._id}
+                title={post.title}
+                description={post.description}
+                publishedOn={post.publishedOn}
+                bookmarked={bookmarked}
+                createdBy={createdBy}
+              />
+            );
+          })}
         </div>
         {/* <div className="hidden w-4/12 -mx-8 lg:block">
           <div className="px-8">
