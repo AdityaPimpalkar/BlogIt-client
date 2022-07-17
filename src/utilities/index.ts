@@ -1,3 +1,21 @@
+export const isEmpty = (value: string | number | object): boolean => {
+  if (value === null || value === "null") {
+    return true;
+  } else if (typeof value !== "number" && value === "") {
+    return true;
+  } else if (typeof value === "undefined" || value === undefined) {
+    return true;
+  } else if (
+    value !== null &&
+    typeof value === "object" &&
+    !Object.keys(value).length
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const parseJwt = (token: string) => {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");

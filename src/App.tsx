@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     if (!user.fullName) loggedInUser();
-  }, [user, loggedInUser]);
+  }, []);
 
   return (
     <>
