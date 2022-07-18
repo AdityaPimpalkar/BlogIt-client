@@ -6,7 +6,6 @@ const Layout = () => {
   return (
     <div className="overflow-x-hidden flex flex-row">
       <Navbar />
-      <div className="w-32"></div>
       <Outlet />
       {/* <Footer /> */}
     </div>

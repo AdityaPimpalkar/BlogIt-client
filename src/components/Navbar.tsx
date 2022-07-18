@@ -30,8 +30,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="px-6 py-4 w-32 flex flex-row min-h-screen bg-white shadow fixed justify-center">
-      <div className="flex flex-col">
+    <nav className="px-6 py-4 w-32 flex flex-row min-h-screen bg-white shadow sticky justify-center">
+      <div className="flex flex-col h-full fixed">
         <div>
           <a
             href="/"
@@ -40,7 +40,7 @@ const Navbar = () => {
             blogit
           </a>
         </div>
-        <div className="grid grid-row-5 grid-flow-row gap-10 justify-center h-full items-center">
+        <div className="grid grid-row-5 mb-8 grid-flow-row gap-10 justify-center h-full items-center">
           <div className="flex justify-center items-center w-10 h-10">
             {nav.home ? (
               <MdHome className="cursor-pointer mx-auto w-10 h-10 text-tealsecondary" />

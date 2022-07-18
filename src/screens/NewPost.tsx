@@ -1,19 +1,26 @@
 import Joi from "joi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../icons/Spinner";
 import { CreatePost } from "../types/posts.types";
 import { createPost } from "../services/posts.service";
 import { Editor } from "@tinymce/tinymce-react";
+import { RootState } from "../types/store.types";
 
 const NewPost = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState<CreatePost>({} as CreatePost);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user._id) navigate("/login", { replace: true });
+  }, [user]);
 
   const form = {
     title: Joi.string().required().min(3).max(100).label("Title"),
