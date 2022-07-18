@@ -3,6 +3,7 @@ import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/solid";
 import { UserCircleIcon } from "@heroicons/react/solid";
 import htmlParser from "html-react-parser";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createBookmark, removeBookmark } from "../services/bookmarks.service";
 
@@ -17,10 +18,14 @@ const PostsCard = ({
   bookmarkRemoved,
 }: PostsCardProps) => {
   const [isBookmarked, setIsBookmarked] = useState(bookmarked);
+  const [_bookmarkId, setBookmarkId] = useState(bookmarkId);
+  const navigate = useNavigate();
+
   const bookmarkPost = async (id: string) => {
     try {
       setIsBookmarked(true);
-      await createBookmark(id);
+      const createdBookmark = await createBookmark(id);
+      setBookmarkId(createdBookmark._id);
       toast.success("Added to bookmarks!");
     } catch (error) {
       setIsBookmarked(false);
@@ -39,7 +44,7 @@ const PostsCard = ({
 
   return (
     <div className="mt-6">
-      <div className=" max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
+      <div className="w-full px-10 py-6  bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between mt-4">
           <a href="#" className="flex items-center">
             {createdBy?.avatar ? (
@@ -59,7 +64,9 @@ const PostsCard = ({
             {isBookmarked ? (
               <BookmarkSolidIcon
                 className="h-7 w-7 mx-1 cursor-pointer"
-                onClick={() => (bookmarkId ? deleteBookmark(bookmarkId) : null)}
+                onClick={() =>
+                  _bookmarkId ? deleteBookmark(_bookmarkId) : null
+                }
               />
             ) : (
               <BookmarkIcon
@@ -70,12 +77,12 @@ const PostsCard = ({
           </div>
         </div>
         <div className="mt-2">
-          <a
-            href={`http://localhost:3000/posts/${id}`}
+          <button
             className="text-2xl font-bold text-gray-700 hover:underline"
+            onClick={() => navigate(`/posts/${id}`)}
           >
             {title}
-          </a>
+          </button>
           <p className="mt-2 text-gray-600 overflow-hidden line-clamp-3">
             {htmlParser(description)}
           </p>
