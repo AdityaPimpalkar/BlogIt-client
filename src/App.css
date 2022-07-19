@@ -1,6 +1,7 @@
 body {
   --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  /* background-color: rgb(229 231 235 / var(--tw-bg-opacity)); */
+  background-color: #fff;
   height: 100%;
 }
 .App-logo {
@@ -40,4 +41,14 @@ body {
 
 .tox-statusbar__branding {
   display: none;
+}
+
+.clamp-3-lines {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  -webkit-box-pack: end;
+  padding-top: 1em;
 }

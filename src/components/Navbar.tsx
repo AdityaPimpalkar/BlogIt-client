@@ -30,7 +30,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="px-6 py-4 w-32 flex flex-row min-h-screen bg-white shadow sticky justify-center">
+    <nav className="px-6 py-4 w-32 flex flex-row min-h-screen bg-white border border-white border-r-gray-300 sticky justify-center">
       <div className="flex flex-col h-full fixed">
         <div>
           <a
