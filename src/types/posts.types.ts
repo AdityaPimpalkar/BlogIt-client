@@ -17,7 +17,7 @@ export type Post = {
   description: string;
   isPublished: boolean;
   publishedOn?: number;
-  bookmarked?: Array<[]>;
+  bookmarked?: Array<{ _id: string }>;
   createdBy: Array<{
     _id: string;
     fullName: string;
