@@ -30,4 +30,5 @@ export type UserData = {
   fullName: string;
   email: string;
   avatar: string;
+  following?: Array<string>;
 };

@@ -3,9 +3,12 @@ import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/solid";
 import { UserCircleIcon } from "@heroicons/react/solid";
 import htmlParser from "html-react-parser";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createBookmark, removeBookmark } from "../services/bookmarks.service";
+import { followUser } from "../services/users.service";
+import { RootState } from "../types/store.types";
 
 const PostsCard = ({
   id,
@@ -17,6 +20,7 @@ const PostsCard = ({
   bookmarked,
   bookmarkRemoved,
 }: PostsCardProps) => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isBookmarked, setIsBookmarked] = useState(bookmarked);
   const [_bookmarkId, setBookmarkId] = useState(bookmarkId);
   const navigate = useNavigate();
@@ -42,9 +46,32 @@ const PostsCard = ({
     }
   };
 
+  const FollowButton = () => {
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    const follow = async (id: string) => {
+      try {
+        setIsFollowing(true);
+        await followUser(id);
+        toast.success(`You're now following ${createdBy.fullName}`);
+      } catch (error) {
+        setIsFollowing(false);
+      }
+    };
+
+    return !isFollowing ? (
+      <button
+        className="text-sm p-0.5 px-2 text-white rounded-full bg-tealsecondary"
+        onClick={() => follow(createdBy._id)}
+      >
+        Follow
+      </button>
+    ) : null;
+  };
+
   return (
     <div className="mt-6">
-      <div className="w-full px-10 py-6  bg-white rounded-lg shadow-md">
+      <div className="w-full px-10 py-6  bg-white rounded-lg shadow-md hover:shadow-xl">
         <div className="flex items-center justify-between mt-4">
           <a href="#" className="flex items-center">
             {createdBy?.avatar ? (
@@ -61,6 +88,7 @@ const PostsCard = ({
             </h1>
           </a>
           <div className="flex items-center">
+            <FollowButton />
             {isBookmarked ? (
               <BookmarkSolidIcon
                 className="h-7 w-7 mx-1 cursor-pointer"
@@ -83,7 +111,7 @@ const PostsCard = ({
           >
             {title}
           </button>
-          <p className="mt-2 text-gray-600 overflow-hidden line-clamp-3">
+          <p className="mt-2 text-gray-600 overflow-hidden line-clamp-3 clamp-3-lines">
             {htmlParser(description)}
           </p>
         </div>
