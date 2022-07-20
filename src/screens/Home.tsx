@@ -22,9 +22,9 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="px-7 py-4 w-full">
-      <div className="container  ">
-        <div className="w-full lg:w-3/4">
+    <div className="w-full">
+      <div className="flex flex-row">
+        <div className="px-7 py-4 w-3/4">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-gray-700 md:text-2xl">
               Home
@@ -37,10 +37,7 @@ const Home = () => {
             </div>
           </div>
           {posts.map((post, index) => {
-            const [createdBy] = post.createdBy;
-            const bookmarked = post.bookmarked
-              ? post.bookmarked.length > 0
-              : false;
+            const bookmarked = post.bookmarked ? true : false;
             return (
               <PostsCard
                 key={index}
@@ -49,15 +46,18 @@ const Home = () => {
                 description={post.description}
                 publishedOn={post.publishedOn}
                 bookmarked={bookmarked}
-                createdBy={createdBy}
+                isFollowing={post.isFollowing}
+                createdBy={post.createdBy}
               />
             );
           })}
         </div>
-        {/* <div className="hidden w-4/12 -mx-8 lg:block">
-          <div className="px-8">
-            <h1 className="mb-4 text-xl font-bold text-gray-700">Authors</h1>
-            <div className="flex flex-col max-w-sm px-6 py-4 mx-auto bg-white rounded-lg shadow-md">
+        <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky">
+          <div className="">
+            <h1 className="mx-4 my-2 text-xl font-bold text-gray-700">
+              Authors
+            </h1>
+            <div className="flex flex-col max-w-sm px-6 py-4 mx-auto">
               <ul className="-mx-4">
                 <li className="flex items-center">
                   <img
@@ -72,9 +72,6 @@ const Home = () => {
                     >
                       Alex John
                     </a>
-                    <span className="text-sm font-light text-gray-700">
-                      Created 23 Posts
-                    </span>
                   </p>
                 </li>
                 <li className="flex items-center mt-6">
@@ -90,9 +87,6 @@ const Home = () => {
                     >
                       Jane Doe
                     </a>
-                    <span className="text-sm font-light text-gray-700">
-                      Created 52 Posts
-                    </span>
                   </p>
                 </li>
                 <li className="flex items-center mt-6">
@@ -108,9 +102,6 @@ const Home = () => {
                     >
                       Lisa Way
                     </a>
-                    <span className="text-sm font-light text-gray-700">
-                      Created 73 Posts
-                    </span>
                   </p>
                 </li>
                 <li className="flex items-center mt-6">
@@ -126,9 +117,6 @@ const Home = () => {
                     >
                       Steve Matt
                     </a>
-                    <span className="text-sm font-light text-gray-700">
-                      Created 245 Posts
-                    </span>
                   </p>
                 </li>
                 <li className="flex items-center mt-6">
@@ -144,15 +132,12 @@ const Home = () => {
                     >
                       Khatab Wedaa
                     </a>
-                    <span className="text-sm font-light text-gray-700">
-                      Created 332 Posts
-                    </span>
                   </p>
                 </li>
               </ul>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

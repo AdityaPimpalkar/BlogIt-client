@@ -35,7 +35,7 @@ const Explore = () => {
         <div className="px-7 py-4 w-3/4">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-gray-700 md:text-2xl">
-              Post
+              Explore
             </h1>
             <div>
               <select className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -45,15 +45,9 @@ const Explore = () => {
             </div>
           </div>
           {posts.map((post, index) => {
-            const [createdBy] = post.createdBy;
-            const bookmarked = post.bookmarked
-              ? post.bookmarked.length > 0
-              : false;
+            const bookmarked = post.bookmarked ? true : false;
 
-            const bookmark =
-              post.bookmarked && post.bookmarked.length > 0
-                ? post.bookmarked[0]
-                : null;
+            const bookmark = post.bookmarked ? post.bookmarked : null;
 
             return (
               <PostsCard
@@ -64,12 +58,13 @@ const Explore = () => {
                 publishedOn={post.publishedOn}
                 bookmarkId={bookmark?._id}
                 bookmarked={bookmarked}
-                createdBy={createdBy}
+                isFollowing={post.isFollowing}
+                createdBy={post.createdBy}
               />
             );
           })}
         </div>
-        <div className="hidden w-1/4 bg-white lg:block min-h-screen right-0 sticky">
+        <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky">
           <div className="">
             <h1 className="mx-4 my-2 text-xl font-bold text-gray-700">
               Authors

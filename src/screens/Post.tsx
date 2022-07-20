@@ -19,6 +19,7 @@ import {
 } from "../services/posts.service";
 import { createBookmark, removeBookmark } from "../services/bookmarks.service";
 import { isEmpty } from "../utilities";
+import { followUser } from "../services/users.service";
 
 const Post = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -31,25 +32,24 @@ const Post = () => {
     image: "",
     isPublished: false,
     publishedOn: 0,
-    bookmarked: [{ _id: "" }],
-    createdBy: [
-      {
-        _id: "",
-        fullName: "",
-        avatar: "",
-      },
-    ],
+    bookmarked: { _id: "" },
+    isFollowing: false,
+    createdBy: {
+      _id: "",
+      fullName: "",
+      avatar: "",
+    },
   } as PostProps);
   const params = useParams();
   const navigate = useNavigate();
-  const [createdBy] = post.createdBy;
-  const [bookmark] = post.bookmarked ? post.bookmarked : [];
+  const createdBy = post.createdBy;
+  const bookmark = post.bookmarked ? post.bookmarked : null;
 
   const loadPost = useCallback(async () => {
     try {
       if (params?.id) {
         const post = await getPostById(params.id);
-        if (post.bookmarked && post.bookmarked?.length > 0) setBookmarked(true);
+        if (post.bookmarked) setBookmarked(true);
         setPost({ ...post });
       }
     } catch (error) {
@@ -77,7 +77,7 @@ const Post = () => {
     try {
       setBookmarked(true);
       const createdBookmark = await createBookmark(id);
-      setPost({ ...post, bookmarked: [{ _id: createdBookmark._id }] });
+      setPost({ ...post, bookmarked: { _id: createdBookmark._id } });
       toast.success("Added to bookmarks!");
     } catch (error) {
       setBookmarked(false);
@@ -91,6 +91,29 @@ const Post = () => {
     } catch (error) {
       setBookmarked(true);
     }
+  };
+
+  const follow = async (id: string) => {
+    try {
+      setPost({ ...post, isFollowing: true });
+      await followUser(id);
+      toast.success(`You're now following ${createdBy.fullName}`);
+    } catch (error) {
+      setPost({ ...post, isFollowing: false });
+    }
+  };
+
+  const FollowButton = () => {
+    return createdBy._id !== user._id ? (
+      !post.isFollowing ? (
+        <button
+          className="text-sm p-0.5 px-2 text-white rounded-full bg-tealsecondary"
+          onClick={() => follow(createdBy._id)}
+        >
+          Follow
+        </button>
+      ) : null
+    ) : null;
   };
 
   const handlePublish = async () => {
@@ -147,7 +170,7 @@ const Post = () => {
                     <RiEditCircleFill className="h-7 w-7 text-tealsecondary mx-1" />
                   </button>
                 )}
-
+                <FollowButton />
                 {isEmpty(user._id) ? (
                   <BookmarkIcon
                     className="h-7 w-7 mx-1 cursor-pointer"
