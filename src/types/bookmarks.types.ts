@@ -11,6 +11,7 @@ export default interface Bookmarks {
     isPublished: boolean;
     publishedOn?: number;
     bookmarked?: Array<[]>;
+    isFollowing: boolean;
     createdBy: {
       _id: string;
       fullName: string;

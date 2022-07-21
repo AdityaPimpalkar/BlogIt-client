@@ -1,3 +1,5 @@
+import { UserData } from "./auth.types";
+
 export type Posts = {
   _id: string;
   image?: string;
@@ -17,12 +19,9 @@ export type Post = {
   description: string;
   isPublished: boolean;
   publishedOn?: number;
-  bookmarked?: Array<{ _id: string }>;
-  createdBy: Array<{
-    _id: string;
-    fullName: string;
-    avatar?: string;
-  }>;
+  isFollowing: boolean;
+  bookmarked?: { _id: string };
+  createdBy: UserData;
 };
 
 export type CreatePost = {

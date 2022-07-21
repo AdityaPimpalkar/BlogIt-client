@@ -17,6 +17,7 @@ const PostsCard = ({
   publishedOn,
   createdBy,
   bookmarkId,
+  isFollowing = false,
   bookmarked,
   bookmarkRemoved,
 }: PostsCardProps) => {
@@ -46,29 +47,6 @@ const PostsCard = ({
     }
   };
 
-  const FollowButton = () => {
-    const [isFollowing, setIsFollowing] = useState(false);
-
-    const follow = async (id: string) => {
-      try {
-        setIsFollowing(true);
-        await followUser(id);
-        toast.success(`You're now following ${createdBy.fullName}`);
-      } catch (error) {
-        setIsFollowing(false);
-      }
-    };
-
-    return !isFollowing ? (
-      <button
-        className="text-sm p-0.5 px-2 text-white rounded-full bg-tealsecondary"
-        onClick={() => follow(createdBy._id)}
-      >
-        Follow
-      </button>
-    ) : null;
-  };
-
   return (
     <div className="mt-6">
       <div className="w-full px-10 py-6  bg-white rounded-lg shadow-md hover:shadow-xl">
@@ -88,7 +66,6 @@ const PostsCard = ({
             </h1>
           </a>
           <div className="flex items-center">
-            <FollowButton />
             {isBookmarked ? (
               <BookmarkSolidIcon
                 className="h-7 w-7 mx-1 cursor-pointer"
@@ -138,6 +115,7 @@ type PostsCardProps = {
   publishedOn?: number;
   bookmarkId?: string;
   bookmarked: boolean;
+  isFollowing: boolean;
   bookmarkRemoved?: (id: string) => void;
   createdBy: {
     _id: string;

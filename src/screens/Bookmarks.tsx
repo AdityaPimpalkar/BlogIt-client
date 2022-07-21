@@ -25,9 +25,9 @@ const Bookmarks = () => {
   };
 
   return (
-    <div className="px-7 py-4 w-full">
-      <div className="container  ">
-        <div className="w-full lg:w-3/4">
+    <div className="w-full">
+      <div className="flex flex-row">
+        <div className="px-7 py-4 w-3/4">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-gray-700 md:text-2xl">
               Bookmarks
@@ -42,11 +42,13 @@ const Bookmarks = () => {
               publishedOn={post.publishedOn}
               bookmarkId={_id}
               bookmarked={true}
+              isFollowing={post.isFollowing}
               bookmarkRemoved={bookmarkRemoved}
               createdBy={post.createdBy}
             />
           ))}
         </div>
+        <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky"></div>
       </div>
     </div>
   );
