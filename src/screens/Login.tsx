@@ -80,7 +80,7 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center bg-gray-200 dark:bg-gray-900">
+    <div className="flex items-center bg-gray-200 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto">
         <div className="max-w-md mx-auto my-10 py-5 bg-white shadow-xl rounded-md">
           <div className="text-center">

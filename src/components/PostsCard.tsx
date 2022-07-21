@@ -1,11 +1,11 @@
-import { HeartIcon, ChatIcon, BookmarkIcon } from "@heroicons/react/outline";
-import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/solid";
-import { UserCircleIcon } from "@heroicons/react/solid";
-import htmlParser from "html-react-parser";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import htmlParser from "html-react-parser";
+import { HeartIcon, ChatIcon, BookmarkIcon } from "@heroicons/react/outline";
+import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/solid";
+import { UserCircleIcon } from "@heroicons/react/solid";
 import { createBookmark, removeBookmark } from "../services/bookmarks.service";
 import { followUser } from "../services/users.service";
 import { RootState } from "../types/store.types";

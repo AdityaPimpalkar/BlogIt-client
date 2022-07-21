@@ -90,14 +90,14 @@ const NewPost = () => {
     }
   };
   return (
-    <div className="px-7 py-4 w-full">
-      <div className="container flex justify-between mx-auto">
-        <div className="w-full lg:w-3/4">
+    <div className="w-full">
+      <div className="flex flex-row">
+        <div className="px-7 py-4 w-3/4">
           <h1 className="text-xl font-bold text-gray-700 md:text-2xl">
             New Post
           </h1>
           <div className="mt-6">
-            <div className="max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
+            <div className="max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-xl">
               <h5 className="text-lg font-bold text-gray-700 md:text-xl">
                 Title
               </h5>
@@ -189,6 +189,7 @@ const NewPost = () => {
             </div>
           </div>
         </div>
+        <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky"></div>
       </div>
     </div>
   );
