@@ -45,6 +45,19 @@ export const getPost = async (id: string): Promise<Post> => {
   }
 };
 
+export const getMyPosts = async (): Promise<Post[]> => {
+  try {
+    const res = await http.get(`${postsApiEndpoint}/myposts`);
+    const post = res.data;
+    return post;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    const message: string = axiosError.response?.data.message;
+    toast.error(message);
+    return Promise.reject();
+  }
+};
+
 export const getPosts = async (): Promise<Post[]> => {
   try {
     const res = await http.get(`${postsApiEndpoint}`);
