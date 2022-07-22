@@ -7,6 +7,7 @@ import { BookmarkIcon, ChatIcon, HeartIcon } from "@heroicons/react/outline";
 import {
   UserCircleIcon,
   BookmarkIcon as BookmarkSolidIcon,
+  PencilIcon,
 } from "@heroicons/react/solid";
 import { RiEditCircleFill } from "react-icons/ri";
 import { Post as PostProps, UpdatePost } from "../types/posts.types";
@@ -104,7 +105,7 @@ const Post = () => {
   };
 
   const FollowButton = () => {
-    return createdBy._id !== user._id ? (
+    return user._id && createdBy._id !== user._id ? (
       !post.isFollowing ? (
         <button
           className="text-sm p-0.5 px-2 text-white rounded-full bg-tealsecondary"
@@ -230,12 +231,42 @@ const Post = () => {
           </div>
         </div>
         <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky">
+          <h1 className="mx-4 my-2 text-xl font-bold text-gray-700">
+            Post author
+          </h1>
           <div className="">
-            <h1 className="mx-4 my-2 text-xl font-bold text-gray-700">
-              Authors
-            </h1>
-            <div className="flex flex-col max-w-sm px-6 py-4 mx-auto">
-              <ul className="-mx-4">
+            <div className="flex flex-col max-w-sm px-4 mx-auto">
+              {user._id ? (
+                <div className="flex flex-col">
+                  <div className="relative py-2 w-28">
+                    <img
+                      src={createdBy.avatar}
+                      alt="avatar"
+                      className="object-cover w-28 h-28 rounded-full"
+                    />
+                    {user._id === createdBy._id ? (
+                      <PencilIcon className="h-7 w-7 text-white absolute right-3 bottom-2 p-1 bg-tealsecondary rounded-full border border-2" />
+                    ) : null}
+                  </div>
+                  <div className="text-2xl">{createdBy.fullName}</div>
+                </div>
+              ) : (
+                <div className="flex flex-row items-center">
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="text-white p-2 w-3/4 bg-tealsecondary rounded-full text-sm"
+                  >
+                    Get started
+                  </button>
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="w-1/4 bg-white rounded-full text-sm"
+                  >
+                    Sign up
+                  </button>
+                </div>
+              )}
+              {/* <ul className="-mx-4">
                 <li className="flex items-center">
                   <img
                     src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
@@ -311,7 +342,7 @@ const Post = () => {
                     </a>
                   </p>
                 </li>
-              </ul>
+              </ul> */}
             </div>
           </div>
         </div>

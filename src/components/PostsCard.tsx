@@ -88,7 +88,7 @@ const PostsCard = ({
           >
             {title}
           </button>
-          <p className="mt-2 text-gray-600 overflow-hidden line-clamp-3 clamp-3-lines">
+          <p className="mt-2 text-gray-600 overflow-hidden line-clamp-3">
             {htmlParser(description)}
           </p>
         </div>

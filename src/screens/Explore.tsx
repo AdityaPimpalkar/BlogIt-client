@@ -1,5 +1,7 @@
+import { PencilIcon, UserCircleIcon } from "@heroicons/react/solid";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import PostsCard from "../components/PostsCard";
 import { explorePosts, getPosts } from "../services/posts.service";
 import { Post } from "../types/posts.types";
@@ -9,6 +11,7 @@ import { isEmpty } from "../utilities";
 const Explore = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [posts, setPosts] = useState<Post[]>([]);
+  const navigate = useNavigate();
 
   const loadPosts = useCallback(async () => {
     try {
@@ -66,11 +69,38 @@ const Explore = () => {
         </div>
         <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky">
           <div className="">
-            <h1 className="mx-4 my-2 text-xl font-bold text-gray-700">
-              Authors
-            </h1>
             <div className="flex flex-col max-w-sm px-6 py-4 mx-auto">
-              <ul className="-mx-4">
+              {user._id ? (
+                <div className="flex flex-col items-center">
+                  <div className="flex relative p-2">
+                    <img
+                      src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
+                      alt="avatar"
+                      className="object-cover w-36 h-36 rounded-full"
+                    />
+                    <PencilIcon className="h-8 w-8 text-white absolute right-5 bottom-2 p-1 bg-tealsecondary rounded-full border border-2" />
+                  </div>
+
+                  <h4>{user.fullName}</h4>
+                </div>
+              ) : (
+                <div className="flex flex-row items-center">
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="text-white p-2 w-3/4 bg-tealsecondary rounded-full text-sm"
+                  >
+                    Get started
+                  </button>
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="w-1/4 bg-white rounded-full text-sm"
+                  >
+                    Sign up
+                  </button>
+                </div>
+              )}
+
+              {/* <ul className="-mx-4">
                 <li className="flex items-center">
                   <img
                     src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
@@ -146,7 +176,7 @@ const Explore = () => {
                     </a>
                   </p>
                 </li>
-              </ul>
+              </ul> */}
             </div>
           </div>
         </div>
