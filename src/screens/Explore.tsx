@@ -1,7 +1,13 @@
-import { PencilIcon, UserCircleIcon } from "@heroicons/react/solid";
+import {
+  PencilIcon,
+  BookmarkIcon,
+  UserCircleIcon,
+} from "@heroicons/react/solid";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RiDraftFill } from "react-icons/ri";
+import { BsFileEarmarkCheckFill } from "react-icons/bs";
 import PostsCard from "../components/PostsCard";
 import { explorePosts, getPosts } from "../services/posts.service";
 import { Post } from "../types/posts.types";
@@ -68,20 +74,34 @@ const Explore = () => {
           })}
         </div>
         <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky">
+          <h1 className="mx-4 my-2 text-xl font-bold text-gray-700">You</h1>
           <div className="">
-            <div className="flex flex-col max-w-sm px-6 py-4 mx-auto">
+            <div className="flex flex-col max-w-sm px-4 mx-auto">
               {user._id ? (
-                <div className="flex flex-col items-center">
-                  <div className="flex relative p-2">
+                <div className="flex flex-col items-start">
+                  <div className="relative py-2 w-28">
                     <img
-                      src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
+                      src={user.avatar}
                       alt="avatar"
-                      className="object-cover w-36 h-36 rounded-full"
+                      className="object-cover w-28 h-28 rounded-full"
                     />
-                    <PencilIcon className="h-8 w-8 text-white absolute right-5 bottom-2 p-1 bg-tealsecondary rounded-full border border-2" />
+                    {user._id === user._id ? (
+                      <PencilIcon className="h-7 w-7 text-white absolute right-3 bottom-2 p-1 bg-tealsecondary rounded-full border border-2" />
+                    ) : null}
                   </div>
-
-                  <h4>{user.fullName}</h4>
+                  <div className="text-2xl">{user.fullName}</div>
+                  <button className="hover:underline flex flex-row items-center my-2">
+                    <BsFileEarmarkCheckFill className="text-tealsecondary h-6 w-6 mr-1" />{" "}
+                    My Posts
+                  </button>
+                  <button className="hover:underline flex flex-row items-center my-2">
+                    <RiDraftFill className="text-tealsecondary h-6 w-6 mr-1" />{" "}
+                    My Drafts
+                  </button>
+                  <button className="hover:underline flex flex-row items-center my-2">
+                    <BookmarkIcon className="text-tealsecondary h-6 w-6 mr-1" />{" "}
+                    My Bookmarks
+                  </button>
                 </div>
               ) : (
                 <div className="flex flex-row items-center">

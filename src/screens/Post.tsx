@@ -108,7 +108,7 @@ const Post = () => {
     return user._id && createdBy._id !== user._id ? (
       !post.isFollowing ? (
         <button
-          className="text-sm p-0.5 px-2 text-white rounded-full bg-tealsecondary"
+          className="w-14 text-sm p-0.5 px-2 text-white rounded-full bg-tealsecondary"
           onClick={() => follow(createdBy._id)}
         >
           Follow
@@ -237,19 +237,25 @@ const Post = () => {
           <div className="">
             <div className="flex flex-col max-w-sm px-4 mx-auto">
               {user._id ? (
-                <div className="flex flex-col">
-                  <div className="relative py-2 w-28">
-                    <img
-                      src={createdBy.avatar}
-                      alt="avatar"
-                      className="object-cover w-28 h-28 rounded-full"
-                    />
-                    {user._id === createdBy._id ? (
-                      <PencilIcon className="h-7 w-7 text-white absolute right-3 bottom-2 p-1 bg-tealsecondary rounded-full border border-2" />
-                    ) : null}
+                <>
+                  <div className="flex flex-col">
+                    <div className="relative py-2 w-28">
+                      <img
+                        src={createdBy.avatar}
+                        alt="avatar"
+                        className="object-cover w-28 h-28 rounded-full"
+                      />
+                      {user._id === createdBy._id ? (
+                        <PencilIcon className="h-7 w-7 text-white absolute right-3 bottom-2 p-1 bg-tealsecondary rounded-full border border-2" />
+                      ) : null}
+                    </div>
+                    <div className="text-2xl">{createdBy.fullName}</div>
+                    <div className="italic text-base text-gray-500 mb-1">
+                      0 followers
+                    </div>
                   </div>
-                  <div className="text-2xl">{createdBy.fullName}</div>
-                </div>
+                  <FollowButton />
+                </>
               ) : (
                 <div className="flex flex-row items-center">
                   <button
