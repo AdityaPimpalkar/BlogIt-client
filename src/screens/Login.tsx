@@ -99,7 +99,7 @@ function Login() {
                 name="email"
                 placeholder="you@company.com"
                 value={email}
-                onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(val: React.ChangeEvent<HTMLInputElement>) =>
                   handleChange(val, setEmail)
                 }
                 error={errors.email ?? errors.email}
@@ -110,9 +110,10 @@ function Login() {
                 name="password"
                 placeholder="Your password"
                 value={password}
-                onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(val: React.ChangeEvent<HTMLInputElement>) =>
                   handleChange(val, setPassword)
                 }
+                onSubmit={handleLogin}
                 error={errors.password ?? errors.password}
               />
               <div className="mb-6">
@@ -156,7 +157,8 @@ const Input = ({
   value,
   placeholder,
   autoFocus,
-  onChnage,
+  onChange,
+  onSubmit,
   error,
 }: InputProps) => {
   return (
@@ -178,7 +180,10 @@ const Input = ({
         autoComplete="off"
         autoCorrect="off"
         autoSave="off"
-        onChange={onChnage}
+        onChange={onChange}
+        onKeyDown={(e) =>
+          e.key === "Enter" && value !== "" && onSubmit ? onSubmit() : null
+        }
       />
       <div className="text-sm text-red-500 mt-1">{error ?? error}</div>
     </div>
@@ -201,7 +206,8 @@ type InputProps = {
   value: string;
   placeholder?: string;
   autoFocus?: boolean;
-  onChnage: React.ChangeEventHandler<HTMLInputElement>;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSubmit?: () => void;
   error?: string;
 };
 
