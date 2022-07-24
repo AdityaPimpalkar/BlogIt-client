@@ -8,25 +8,32 @@ import {
   UserCircleIcon,
   BookmarkIcon as BookmarkSolidIcon,
   PencilIcon,
+  TrashIcon,
 } from "@heroicons/react/solid";
 import { RiEditCircleFill } from "react-icons/ri";
 import { Post as PostProps, UpdatePost } from "../types/posts.types";
+import { Comments, CreateComment } from "../types/comments.types";
 import { RootState } from "../types/store.types";
-import Spinner from "../icons/Spinner";
 import {
   exploreByPostId,
   getPostById,
   updatePost,
 } from "../services/posts.service";
 import { createBookmark, removeBookmark } from "../services/bookmarks.service";
-import { isEmpty } from "../utilities";
 import { followUser } from "../services/users.service";
-
+import {
+  createComment,
+  deleteComment,
+  getComments,
+} from "../services/comments.service";
+import { isEmpty } from "../utilities";
+import Spinner from "../icons/Spinner";
 const Post = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [isProcessing, setIsProcessing] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [post, setPost] = useState<PostProps>({
+    _id: "",
     title: "",
     subTitle: "",
     description: "",
@@ -41,6 +48,7 @@ const Post = () => {
       avatar: "",
     },
   } as PostProps);
+  const [comments, setComments] = useState<Comments[]>([]);
   const params = useParams();
   const navigate = useNavigate();
   const createdBy = post.createdBy;
@@ -52,6 +60,8 @@ const Post = () => {
         const post = await getPostById(params.id);
         if (post.bookmarked) setBookmarked(true);
         setPost({ ...post });
+        const comments = await getComments(post._id);
+        setComments([...comments]);
       }
     } catch (error) {
       navigate("/not-found", { replace: true });
@@ -94,17 +104,17 @@ const Post = () => {
     }
   };
 
-  const follow = async (id: string) => {
-    try {
-      setPost({ ...post, isFollowing: true });
-      await followUser(id);
-      toast.success(`You're now following ${createdBy.fullName}`);
-    } catch (error) {
-      setPost({ ...post, isFollowing: false });
-    }
-  };
-
   const FollowButton = () => {
+    const follow = async (id: string) => {
+      try {
+        setPost({ ...post, isFollowing: true });
+        await followUser(id);
+        toast.success(`You're now following ${createdBy.fullName}`);
+      } catch (error) {
+        setPost({ ...post, isFollowing: false });
+      }
+    };
+
     return user._id && createdBy._id !== user._id ? (
       !post.isFollowing ? (
         <button
@@ -114,6 +124,88 @@ const Post = () => {
           Follow
         </button>
       ) : null
+    ) : null;
+  };
+
+  const Comments = () => {
+    const [comment, setComment] = useState("");
+
+    const postComment = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      try {
+        const commentObj: CreateComment = {
+          postId: post._id,
+          comment,
+        };
+        const createdComment = await createComment(commentObj);
+        const newComment = {
+          _id: createdComment._id,
+          ...commentObj,
+          commentBy: {
+            _id: user._id,
+            avatar: user.avatar,
+            fullName: user.fullName,
+          },
+        };
+
+        setComments([...comments, newComment]);
+      } catch (error) {}
+    };
+
+    const removeComment = async (commentId: string) => {
+      try {
+        await deleteComment(commentId);
+        const updatedComments = comments.filter(
+          (comment) => comment._id !== commentId
+        );
+        setComments([...updatedComments]);
+      } catch (error) {}
+    };
+
+    return user._id ? (
+      <>
+        <div className="text-xl text-gray-500 my-2">
+          Comments ({comments.length})
+        </div>
+        <div className="flex flex-col w-3/4">
+          {comments.map(({ _id, commentBy, comment }, index) => (
+            <div className="my-2" key={index}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <img
+                    src={commentBy.avatar}
+                    className="h-6 w-6 rounded-full mr-2"
+                  />
+                  <div className="text-sm font-bold">{commentBy.fullName}</div>
+                </div>
+                {user._id === commentBy._id ? (
+                  <button
+                    className="ml-auto"
+                    onClick={() => removeComment(_id)}
+                  >
+                    <TrashIcon className="h-5 w-5 " />
+                  </button>
+                ) : null}
+              </div>
+              <div className="italic text-sm ml-8">{comment}</div>
+            </div>
+          ))}
+
+          <div className="flex flex-row items-center mb-1">
+            <img src={user.avatar} className="h-8 w-8 rounded-full mr-2" />
+            <input
+              type="text"
+              value={comment}
+              placeholder="Write a comment..."
+              className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:border-tealprimary-400 focus:ring focus:ring-tealprimary focus:border-tealprimary-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+              onChange={(e) => setComment(e.target.value)}
+              onKeyDown={(e) =>
+                e.key == "Enter" && comment !== "" ? postComment(e) : null
+              }
+            />
+          </div>
+        </div>
+      </>
     ) : null;
   };
 
@@ -208,7 +300,7 @@ const Post = () => {
                   <HeartIcon className="h-7 w-7 mx-1" />
                   123
                   <ChatIcon className="h-7 w-7 mx-1" />
-                  50
+                  {comments.length}
                 </div>
               </div>
             ) : (
@@ -228,11 +320,12 @@ const Post = () => {
                 </button>
               </div>
             )}
+            <Comments />
           </div>
         </div>
         <div className="hidden w-1/4 bg-white lg:block min-h-screen border border-white border-l-gray-300 right-0 sticky">
           <h1 className="mx-4 my-2 text-xl font-bold text-gray-700">
-            Post author
+            {user._id ? "Post author" : ""}
           </h1>
           <div className="">
             <div className="flex flex-col max-w-sm px-4 mx-auto">
@@ -272,83 +365,6 @@ const Post = () => {
                   </button>
                 </div>
               )}
-              {/* <ul className="-mx-4">
-                <li className="flex items-center">
-                  <img
-                    src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
-                    alt="avatar"
-                    className="object-cover w-10 h-10 mx-4 rounded-full"
-                  />
-                  <p>
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:underline"
-                    >
-                      Alex John
-                    </a>
-                  </p>
-                </li>
-                <li className="flex items-center mt-6">
-                  <img
-                    src="https://images.unsplash.com/photo-1464863979621-258859e62245?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=333&amp;q=80"
-                    alt="avatar"
-                    className="object-cover w-10 h-10 mx-4 rounded-full"
-                  />
-                  <p>
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:underline"
-                    >
-                      Jane Doe
-                    </a>
-                  </p>
-                </li>
-                <li className="flex items-center mt-6">
-                  <img
-                    src="https://images.unsplash.com/photo-1531251445707-1f000e1e87d0?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=281&amp;q=80"
-                    alt="avatar"
-                    className="object-cover w-10 h-10 mx-4 rounded-full"
-                  />
-                  <p>
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:underline"
-                    >
-                      Lisa Way
-                    </a>
-                  </p>
-                </li>
-                <li className="flex items-center mt-6">
-                  <img
-                    src="https://images.unsplash.com/photo-1500757810556-5d600d9b737d?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=735&amp;q=80"
-                    alt="avatar"
-                    className="object-cover w-10 h-10 mx-4 rounded-full"
-                  />
-                  <p>
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:underline"
-                    >
-                      Steve Matt
-                    </a>
-                  </p>
-                </li>
-                <li className="flex items-center mt-6">
-                  <img
-                    src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=373&amp;q=80"
-                    alt="avatar"
-                    className="object-cover w-10 h-10 mx-4 rounded-full"
-                  />
-                  <p>
-                    <a
-                      href="#"
-                      className="mx-1 font-bold text-gray-700 hover:underline"
-                    >
-                      Khatab Wedaa
-                    </a>
-                  </p>
-                </li>
-              </ul> */}
             </div>
           </div>
         </div>
