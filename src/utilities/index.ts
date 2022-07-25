@@ -16,6 +16,17 @@ export const isEmpty = (value: string | number | object): boolean => {
   }
 };
 
+export function convertToPlain(html: string) {
+  // Create a new div element
+  var tempDivElement = document.createElement("div");
+
+  // Set the HTML content with the given value
+  tempDivElement.innerHTML = html;
+
+  // Retrieve the text property of the element
+  return tempDivElement.textContent || tempDivElement.innerText || "";
+}
+
 export const parseJwt = (token: string) => {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");

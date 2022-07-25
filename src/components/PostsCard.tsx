@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import htmlParser from "html-react-parser";
 import { HeartIcon, ChatIcon, BookmarkIcon } from "@heroicons/react/outline";
 import { BookmarkIcon as BookmarkSolidIcon } from "@heroicons/react/solid";
 import { UserCircleIcon } from "@heroicons/react/solid";
 import { createBookmark, removeBookmark } from "../services/bookmarks.service";
-import { followUser } from "../services/users.service";
 import { RootState } from "../types/store.types";
+import { convertToPlain } from "../utilities";
 
 const PostsCard = ({
   id,
@@ -89,19 +88,19 @@ const PostsCard = ({
             {title}
           </button>
           <p className="mt-2 text-gray-600 overflow-hidden line-clamp-3">
-            {htmlParser(description)}
+            {convertToPlain(description).replace(/(\r\n|\n|\r)/gm, "")}
           </p>
         </div>
         <div className="flex items-center justify-between mt-4">
           <span className="font-light text-gray-600">
             {publishedOn ? new Date(publishedOn).toDateString() : null}
           </span>
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <HeartIcon className="h-7 w-7 mx-1" />
             123
             <ChatIcon className="h-7 w-7 mx-1" />
             50
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
