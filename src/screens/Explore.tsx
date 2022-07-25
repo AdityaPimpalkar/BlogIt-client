@@ -90,15 +90,24 @@ const Explore = () => {
                     ) : null}
                   </div>
                   <div className="text-2xl">{user.fullName}</div>
-                  <button className="hover:underline flex flex-row items-center my-2">
+                  <button
+                    className="hover:underline flex flex-row items-center my-2"
+                    onClick={() => navigate("/posts")}
+                  >
                     <BsFileEarmarkCheckFill className="text-tealsecondary h-6 w-6 mr-1" />{" "}
                     My Posts
                   </button>
-                  <button className="hover:underline flex flex-row items-center my-2">
+                  <button
+                    className="hover:underline flex flex-row items-center my-2"
+                    onClick={() => navigate("/drafts")}
+                  >
                     <RiDraftFill className="text-tealsecondary h-6 w-6 mr-1" />{" "}
                     My Drafts
                   </button>
-                  <button className="hover:underline flex flex-row items-center my-2">
+                  <button
+                    className="hover:underline flex flex-row items-center my-2"
+                    onClick={() => navigate("/bookmarks")}
+                  >
                     <BookmarkIcon className="text-tealsecondary h-6 w-6 mr-1" />{" "}
                     My Bookmarks
                   </button>

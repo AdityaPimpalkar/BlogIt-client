@@ -15,6 +15,8 @@ import Post from "./screens/Post";
 import EditPost from "./screens/EditPost";
 import Home from "./screens/Home";
 import Bookmarks from "./screens/Bookmarks";
+import MyPosts from "./screens/MyPosts";
+import MyDrafts from "./screens/MyDrafts";
 
 toast.configure({ position: "top-right" });
 
@@ -43,6 +45,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/explore" element={<Explore />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/posts" element={<MyPosts />} />
+          <Route path="/drafts" element={<MyDrafts />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />

@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/solid";
-import PostsCard from "../components/PostsCard";
-import { getMyPosts } from "../services/posts.service";
-import { followingUsers } from "../services/users.service";
 import { Post } from "../types/posts.types";
 import { FollowingUsers } from "../types/users.types";
 import { RootState } from "../types/store.types";
+import PostsCard from "../components/PostsCard";
+import { getHomePosts } from "../services/posts.service";
+import { followingUsers } from "../services/users.service";
 
 const Home = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -20,7 +20,7 @@ const Home = () => {
 
   const loadPosts = useCallback(async () => {
     try {
-      const loadedPosts = await getMyPosts();
+      const loadedPosts = await getHomePosts();
       const following = await followingUsers();
       setMyFollowing(following);
       setPosts([...loadedPosts]);
@@ -72,7 +72,7 @@ const Home = () => {
               <ul className="-mx-4">
                 {following.length > 0
                   ? following.map((user, index) => (
-                      <li className="flex items-center" key={index}>
+                      <li className="flex items-center mb-3" key={index}>
                         {user.avatar ? (
                           <img
                             src={user.avatar}
