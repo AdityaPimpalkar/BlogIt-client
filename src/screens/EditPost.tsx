@@ -91,7 +91,9 @@ const EditPost = () => {
 
       if (isValid) {
         const post = await updatePost(formData);
-        toast.success("Post published successfully!");
+        toast.success(
+          isPublish ? "Post published successfully!" : "Saved as a draft."
+        );
         navigate(`/posts/${post._id}`, { replace: true });
       }
       setIsProcessing(false);

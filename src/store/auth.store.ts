@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Token, TokenData, UserData } from "../types/auth.types";
-import { Dispatch } from "redux";
+import { UserData } from "../types/auth.types";
 
 const user: UserData = {
   _id: "",

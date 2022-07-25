@@ -162,7 +162,7 @@ const Post = () => {
       } catch (error) {}
     };
 
-    return user._id ? (
+    return user._id && post.isPublished ? (
       <>
         <div className="text-xl text-gray-500 my-2">
           Comments ({comments.length})
@@ -276,12 +276,12 @@ const Post = () => {
                       bookmark ? deleteBookmark(bookmark._id) : null
                     }
                   />
-                ) : (
+                ) : post.isPublished ? (
                   <BookmarkIcon
                     className="h-7 w-7 mx-1 cursor-pointer"
                     onClick={() => bookmarkPost(post._id)}
                   />
-                )}
+                ) : null}
               </div>
             </div>
             <div className="mt-4">

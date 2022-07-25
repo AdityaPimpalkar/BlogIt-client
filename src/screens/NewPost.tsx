@@ -80,8 +80,9 @@ const NewPost = () => {
 
       if (isValid) {
         const post = await createPost(formData);
-        console.log(post);
-        toast.success("Post published successfully!");
+        toast.success(
+          isPublish ? "Post published successfully!" : "Saved as a draft."
+        );
         navigate(`/posts/${post._id}`, { replace: true });
       }
       setIsProcessing(false);
@@ -128,7 +129,7 @@ const NewPost = () => {
                   value={subTitle}
                   onChange={(e) => handleChange(e, setSubTitle)}
                   minLength={3}
-                  maxLength={100}
+                  maxLength={300}
                   rows={3}
                 />
                 <div className="text-sm text-red-500 mt-1">

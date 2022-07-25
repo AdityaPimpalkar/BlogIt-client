@@ -134,13 +134,12 @@ function Login() {
               </div>
               <p className="text-sm text-center text-gray-400">
                 Don't have an account yet?{" "}
-                <a
-                  href="/signup"
+                <button
+                  onClick={() => navigate("/signup")}
                   className="text-indigo-400 underline focus:outline-none focus:underline focus:text-indigo-500 dark:focus:border-indigo-800"
                 >
-                  Signup
-                </a>
-                .
+                  Signup.
+                </button>
               </p>
             </form>
           </div>
