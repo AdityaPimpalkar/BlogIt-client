@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Joi from "joi";
 import Spinner from "../icons/Spinner";
@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../store/auth.store";
 import { setNavigation } from "../store/navigation.store";
 import { setJwt } from "../utilities";
+import { CheckIcon } from "@heroicons/react/solid";
+
+const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_CLIENT_ID;
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -17,6 +20,9 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<signUpForm>({} as signUpForm);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [avatars, setAvatars] = useState<
+    { image: string; isSelected: boolean }[]
+  >([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,6 +41,33 @@ function Signup() {
       .options({
         messages: { "any.only": "{{#label}} does not match with password" },
       }),
+    avatar: Joi.allow(),
+  };
+  const loadImages = async () => {
+    const res = await fetch(
+      `https://api.unsplash.com/photos/random?count=4&query=person&orientation=portrait&client_id=${UNSPLASH_KEY}`
+    );
+    const images: [{ urls: { thumb: string } }] = await res.json();
+    const avatarImages: Array<{ image: string; isSelected: boolean }> = [];
+    images.map((image, index) => {
+      if (index === 0)
+        avatarImages.push({ image: image.urls.thumb, isSelected: true });
+      else avatarImages.push({ image: image.urls.thumb, isSelected: false });
+    });
+    setAvatars([...avatarImages]);
+  };
+
+  useEffect(() => {
+    loadImages();
+  }, []);
+
+  const chooseAvatar = (avatarIndex: number) => {
+    const updatedAvatars = avatars.map((avatar, index) => {
+      if (avatarIndex === index) return { ...avatar, isSelected: true };
+      else return { ...avatar, isSelected: false };
+    });
+
+    setAvatars([...updatedAvatars]);
   };
 
   const handleChange = (
@@ -62,13 +95,16 @@ function Signup() {
   };
 
   const handleSave = async () => {
+    const avatar = avatars.find((avatar) => avatar.isSelected === true);
     const formData: signUpForm = {
       firstName: firstName,
       lastName: lastName,
       email: email,
       password: password,
       confirmPassword: confirmPassword,
+      avatar: avatar ? avatar.image : "",
     };
+
     const schema = Joi.object({ ...form });
     const { error } = schema.validate(formData);
     if (error) {
@@ -89,7 +125,7 @@ function Signup() {
       dispatch(setNavigation({ nav: "home" }));
       setJwt(tokenData.token);
       toast.success("Signed up successfully!");
-      navigate("/explore", { replace: true });
+      navigate("/home", { replace: true });
     } catch {
       setIsProcessing(false);
     }
@@ -108,90 +144,109 @@ function Signup() {
             </p>
           </div>
           <div className="m-7">
-            <form action="">
-              <Input
-                type="text"
-                label="First name"
-                name="firstName"
-                placeholder="John"
-                autoFocus={true}
-                value={firstName}
-                onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChange(val, setFirstName)
-                }
-                error={errors.firstName ?? errors.firstName}
-              />
-              <Input
-                type="text"
-                label="Last name"
-                name="lastName"
-                placeholder="Smith"
-                value={lastName}
-                onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChange(val, setLastName)
-                }
-                error={errors.lastName ?? errors.lastName}
-              />
-              <Input
-                type="email"
-                label="Email address"
-                name="email"
-                placeholder="you@company.com"
-                value={email}
-                onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChange(val, setEmail)
-                }
-                error={errors.email ?? errors.email}
-              />
-              <Input
-                type="password"
-                label="Password"
-                name="password"
-                placeholder="Your password"
-                value={password}
-                onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChange(val, setPassword)
-                }
-                error={errors.password ?? errors.password}
-              />
-              <Input
-                type="password"
-                label="Confirm password"
-                name="confirmPassword"
-                placeholder="Re-type your password"
-                value={confirmPassword}
-                onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChange(val, setConfirmPassword)
-                }
-                error={errors.confirmPassword ?? errors.confirmPassword}
-              />
-              <div className="mb-6">
+            <Input
+              type="text"
+              label="First name"
+              name="firstName"
+              placeholder="John"
+              autoFocus={true}
+              value={firstName}
+              onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(val, setFirstName)
+              }
+              error={errors.firstName ?? errors.firstName}
+            />
+            <Input
+              type="text"
+              label="Last name"
+              name="lastName"
+              placeholder="Smith"
+              value={lastName}
+              onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(val, setLastName)
+              }
+              error={errors.lastName ?? errors.lastName}
+            />
+            <Input
+              type="email"
+              label="Email address"
+              name="email"
+              placeholder="you@company.com"
+              value={email}
+              onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(val, setEmail)
+              }
+              error={errors.email ?? errors.email}
+            />
+            <Input
+              type="password"
+              label="Password"
+              name="password"
+              placeholder="Your password"
+              value={password}
+              onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(val, setPassword)
+              }
+              error={errors.password ?? errors.password}
+            />
+            <Input
+              type="password"
+              label="Confirm password"
+              name="confirmPassword"
+              placeholder="Re-type your password"
+              value={confirmPassword}
+              onChnage={(val: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(val, setConfirmPassword)
+              }
+              error={errors.confirmPassword ?? errors.confirmPassword}
+            />
+            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-400">
+              Choose an avatar
+            </label>
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              {avatars.map(({ image, isSelected }, index) => (
                 <button
-                  type="button"
-                  className={`w-full px-3 py-4 flex justify-center items-center text-white bg-tealsecondary rounded-md focus:outline-none ${
-                    isProcessing ?? "cursor-not-allowed"
-                  }`}
-                  onClick={() => handleSave()}
-                  disabled={isProcessing}
+                  className="flex justify-center relative items-center"
+                  key={index}
+                  onClick={() => chooseAvatar(index)}
                 >
-                  {isProcessing ? (
-                    <Spinner className="text-white h-5 w-5" />
+                  <img
+                    src={image}
+                    alt="avatar"
+                    className="object-cover h-20 w-20 rounded-full"
+                  />
+                  {isSelected ? (
+                    <CheckIcon className="h-6 w-6 text-white absolute right-2 bottom-0 p-1 bg-tealsecondary rounded-full border border-2" />
                   ) : null}
-
-                  {isProcessing ? "Processing..." : "Create account"}
                 </button>
-              </div>
-              <p className="text-sm text-center text-gray-400">
-                Already have an account yet?{" "}
-                <a
-                  href="/login"
-                  className="text-indigo-400 underline focus:outline-none focus:underline focus:text-indigo-500 dark:focus:border-indigo-800"
-                >
-                  Login
-                </a>
-                .
-              </p>
-            </form>
+              ))}
+            </div>
+
+            <div className="mb-6">
+              <button
+                type="button"
+                className={`w-full px-3 py-4 flex justify-center items-center text-white bg-tealsecondary rounded-md focus:outline-none ${
+                  isProcessing ?? "cursor-not-allowed"
+                }`}
+                onClick={() => handleSave()}
+                disabled={isProcessing}
+              >
+                {isProcessing ? (
+                  <Spinner className="text-white h-5 w-5" />
+                ) : null}
+
+                {isProcessing ? "Processing..." : "Create account"}
+              </button>
+            </div>
+            <p className="text-sm text-center text-gray-400">
+              Already have an account yet?{" "}
+              <button
+                onClick={() => navigate("/login")}
+                className="text-indigo-400 underline focus:outline-none focus:underline focus:text-indigo-500 dark:focus:border-indigo-800"
+              >
+                Login.
+              </button>
+            </p>
           </div>
         </div>
       </div>
@@ -241,6 +296,7 @@ type signUpForm = {
   email: string;
   password: string;
   confirmPassword?: string;
+  avatar: string;
 };
 
 type InputProps = {
