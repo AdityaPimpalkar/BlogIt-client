@@ -30,12 +30,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="px-6 py-4 w-32 flex flex-row min-h-screen bg-white border border-white border-r-gray-300 sticky justify-center">
+    <nav className="md:px-4 py-4 w-20 lg:w-32 flex flex-row min-h-screen bg-white border border-white border-r-gray-300 sticky justify-center">
       <div className="flex flex-col h-full fixed">
         <div>
           <a
             href="/"
-            className="text-xl font-bold text-tealsecondary md:text-2xl"
+            className="text-lg font-semibold md:text-xl md:font-bold text-tealsecondary md:text-2xl"
           >
             blogit
           </a>
@@ -43,10 +43,10 @@ const Navbar = () => {
         <div className="grid grid-row-5 mb-8 grid-flow-row gap-10 justify-center h-full items-center">
           <div className="flex justify-center items-center w-10 h-10">
             {nav.home ? (
-              <MdHome className="cursor-pointer mx-auto w-10 h-10 text-tealsecondary" />
+              <MdHome className="cursor-pointer mx-auto w-9 h-9 text-tealsecondary" />
             ) : (
               <MdOutlineHome
-                className="cursor-pointer mx-auto w-7 h-7"
+                className="cursor-pointer mx-auto w-6 h-6"
                 onClick={() => {
                   if (user._id) {
                     dispatch(setNavigation({ nav: "home" }));
@@ -59,10 +59,10 @@ const Navbar = () => {
 
           <div className="flex justify-center items-center w-10 h-10">
             {nav.explore ? (
-              <MdExplore className="cursor-pointer mx-auto w-10 h-10 text-tealsecondary" />
+              <MdExplore className="cursor-pointer mx-auto w-9 h-9 text-tealsecondary" />
             ) : (
               <MdOutlineExplore
-                className="cursor-pointer mx-auto w-7 h-7"
+                className="cursor-pointer mx-auto w-6 h-6"
                 onClick={() => {
                   dispatch(setNavigation({ nav: "explore" }));
                   navigate("/explore");
@@ -72,10 +72,10 @@ const Navbar = () => {
           </div>
           <div className="flex justify-center items-center w-10 h-10">
             {nav.newPost ? (
-              <PencilSolidIcon className="cursor-pointer mx-auto w-10 h-10 text-tealsecondary" />
+              <PencilSolidIcon className="cursor-pointer mx-auto w-9 h-9 text-tealsecondary" />
             ) : (
               <PencilIcon
-                className="cursor-pointer mx-auto w-7 h-7"
+                className="cursor-pointer mx-auto w-6 h-6"
                 onClick={() => {
                   if (user._id) {
                     dispatch(setNavigation({ nav: "newPost" }));
@@ -87,10 +87,10 @@ const Navbar = () => {
           </div>
           <div className="flex justify-center items-center w-10 h-10">
             {nav.bookmarks ? (
-              <BookmarkSolidIcon className="cursor-pointer mx-auto w-10 h-10 text-tealsecondary" />
+              <BookmarkSolidIcon className="cursor-pointer mx-auto w-9 h-9 text-tealsecondary" />
             ) : (
               <BookmarkIcon
-                className="cursor-pointer mx-auto w-7 h-7"
+                className="cursor-pointer mx-auto w-6 h-6"
                 onClick={() => {
                   if (user._id) {
                     dispatch(setNavigation({ nav: "bookmarks" }));
@@ -105,18 +105,18 @@ const Navbar = () => {
               <img
                 src={user?.avatar}
                 alt="avatar"
-                className="hidden object-cover w-10 h-10 rounded-full sm:block"
+                className="hidden object-cover w-9 h-9 rounded-full sm:block"
               />
             ) : (
               <UserCircleIcon
-                className="w-7 h-7 cursor-pointer"
+                className="w-6 h-6 cursor-pointer"
                 onClick={() => navigate("/login")}
               />
             )}
           </div>
           {user.fullName && (
             <div className="flex justify-center items-center w-10 h-10">
-              <LogoutIcon className="h-7 w-7 cursor-pointer" onClick={logout} />
+              <LogoutIcon className="h-6 w-6 cursor-pointer" onClick={logout} />
             </div>
           )}
         </div>

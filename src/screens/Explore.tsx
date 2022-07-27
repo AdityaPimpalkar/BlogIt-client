@@ -3,7 +3,7 @@ import {
   BookmarkIcon,
   UserCircleIcon,
 } from "@heroicons/react/solid";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RiDraftFill } from "react-icons/ri";
@@ -13,8 +13,10 @@ import { explorePosts, getPosts } from "../services/posts.service";
 import { Post } from "../types/posts.types";
 import { RootState } from "../types/store.types";
 import { isEmpty } from "../utilities";
+import { AuthContext, IAuthContext } from "../context/AuthContext";
 
 const Explore = () => {
+  const { user: authUser } = useContext(AuthContext);
   const user = useSelector((state: RootState) => state.auth.user);
   const [posts, setPosts] = useState<Post[]>([]);
   const navigate = useNavigate();
@@ -41,15 +43,15 @@ const Explore = () => {
   return (
     <div className="w-full">
       <div className="flex flex-row">
-        <div className="px-7 py-4 w-3/4">
+        <div className="px-7 py-4 lg:w-3/4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-gray-700 md:text-2xl">
+            <h1 className="text-lg md:text-xl font-bold text-gray-700 md:text-2xl">
               Explore
             </h1>
             <div>
               <select className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <option>Latest</option>
-                <option>Last Week</option>
+                {/* <option>Latest</option>
+                <option>Last Week</option> */}
               </select>
             </div>
           </div>
